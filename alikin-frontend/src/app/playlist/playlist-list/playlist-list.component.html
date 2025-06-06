@@ -1,0 +1,87 @@
+<div class="playlist-list-container">
+  <header class="list-header">
+    <h1 *ngIf="listType !== 'currentUser'">{{ listTitle }}</h1>
+    <button *ngIf="listType === 'currentUser'" class="create-button" (click)="navigateToCreate()">Crear Nueva Playlist</button>
+  </header>
+
+  <div class="search-bar-container">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar playlists por nombre, descripción, creador..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchTermChange()"
+      aria-label="Buscar playlists">
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Cargando playlists...</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="error-banner">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage">
+    <ng-container *ngIf="listType === 'currentUser'">
+      <section class="playlist-section my-playlists-section">
+        <h2 class="section-title">Mis Playlists</h2>
+        <div *ngIf="filteredMyPlaylists.length > 0; else noMyPlaylists">
+          <app-playlist-item
+            *ngFor="let playlist of filteredMyPlaylists"
+            [playlist]="playlist"
+            (viewDetails)="handleViewDetails($event)"
+            (editPlaylist)="handleEditPlaylist($event)"
+            (deletePlaylist)="handleDeletePlaylist($event, 'my')">
+          </app-playlist-item>
+        </div>
+        <ng-template #noMyPlaylists>
+          <p class="empty-state-section">
+            <span *ngIf="searchTerm.trim() !== ''">No se encontraron playlists tuyas que coincidan con "{{ searchTerm }}".</span>
+            <span *ngIf="searchTerm.trim() === ''">Aún no has creado ninguna playlist. ¡Anímate a crear la primera!</span>
+          </p>
+        </ng-template>
+      </section>
+
+      <hr class="section-separator">
+
+      <section class="playlist-section other-public-playlists-section">
+        <h2 class="section-title">Otras Playlists Públicas</h2>
+        <div *ngIf="filteredOtherPublicPlaylists.length > 0; else noOtherPublicPlaylists">
+          <app-playlist-item
+            *ngFor="let playlist of filteredOtherPublicPlaylists"
+            [playlist]="playlist"
+            (viewDetails)="handleViewDetails($event)"
+            (editPlaylist)="handleEditPlaylist($event)"
+            (deletePlaylist)="handleDeletePlaylist($event, 'other')">
+          </app-playlist-item>
+        </div>
+        <ng-template #noOtherPublicPlaylists>
+          <p class="empty-state-section">
+            <span *ngIf="searchTerm.trim() !== ''">No se encontraron otras playlists públicas que coincidan con "{{ searchTerm }}".</span>
+            <span *ngIf="searchTerm.trim() === ''">No hay otras playlists públicas disponibles por el momento.</span>
+          </p>
+        </ng-template>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="listType === 'public' || listType === 'userSpecific'">
+      <div *ngIf="filteredSingleListPlaylists.length > 0; else noSingleListPlaylistsFound">
+        <app-playlist-item
+          *ngFor="let playlist of filteredSingleListPlaylists"
+          [playlist]="playlist"
+          (viewDetails)="handleViewDetails($event)"
+          (editPlaylist)="handleEditPlaylist($event)"
+          (deletePlaylist)="handleDeletePlaylist($event, 'single')">
+        </app-playlist-item>
+      </div>
+      <ng-template #noSingleListPlaylistsFound>
+        <p class="empty-state">
+          <span *ngIf="searchTerm.trim() !== ''">No se encontraron playlists que coincidan con tu búsqueda "{{ searchTerm }}".</span>
+          <span *ngIf="searchTerm.trim() === ''">No hay playlists para mostrar en esta sección.</span>
+        </p>
+      </ng-template>
+    </ng-container>
+
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="spotify-player" *ngIf="musicService.currentSong">
+  <!-- Izquierda: info -->
+  <div class="player-left">
+    <img class="cover" [src]="musicService.currentSong.coverImageUrl || '/assets/default-cover.jpg'" alt="cover">
+    <div class="track-info">
+      <div class="title">{{ musicService.currentSong.title }}</div>
+      <div class="artist">{{ musicService.currentSong.artist }}</div>
+    </div>
+  </div>
+
+  <!-- Centro: controles -->
+  <div class="player-center">
+    <div class="controls">
+      <button><i class="fas fa-random"></i></button>
+      <button><i class="fas fa-step-backward"></i></button>
+      <button class="play-btn" (click)="togglePlayPause()">
+        <img *ngIf="musicService.isPlaying" src="assets/icons/pause.svg" alt="Pause" class="play-icon">
+        <img *ngIf="!musicService.isPlaying" src="assets/icons/play.svg" alt="Play" class="play-icon">
+      </button>
+      <button><i class="fas fa-step-forward"></i></button>
+      <button><i class="fas fa-microphone"></i></button>
+    </div>
+
+    <!-- Progreso justo debajo -->
+    <div *ngIf="musicService.duration != Infinity" class="progress-bar-container" >
+      <span>{{ musicService.formatTime(musicService.currentTime) }}</span>
+      <input
+        type="range"
+        class="progress-range"
+        min="0"
+        [max]="musicService.duration"
+        [value]="musicService.currentTime"
+        (input)="musicService.seekTo($event)"
+      />
+      <span>{{ musicService.formatTime(musicService.duration) }}</span>
+
+    </div>
+  </div>
+
+  <!-- Derecha: volumen -->
+  <div class="player-right">
+    <i class="fas fa-volume-up"></i>
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [(ngModel)]="musicService.volume"
+      (input)="musicService.changeVolume()"
+      class="volume-range"
+    />
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="login-container">
+  <img src="assets/icons/alikin-logo.png" alt="Logo Alikin" class="logo-app" >
+
+  <h2>Iniciar sesión</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input formControlName="usernameOrEmail" placeholder="Email o Nickname" />
+    <p *ngIf="loginForm.get('usernameOrEmail')?.touched && loginForm.get('usernameOrEmail')?.invalid" class="error">
+      Este campo es obligatorio
+    </p>
+
+    <input formControlName="password" type="password" placeholder="Contraseña" />
+    <p *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error">
+      Contraseña es obligatoria
+    </p>
+
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+    <p class="secondary-action-text">¿No tienes cuenta? </p>
+    <button type="button" class="btn-link-action" routerLink="/auth/register">Regístrate aquí</button>
+
+  </form>
+</div>
