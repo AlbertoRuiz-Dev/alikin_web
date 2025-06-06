@@ -19,7 +19,7 @@ services:
     networks:
       - app-network
 
-  frontend: # Servicio frontend Angular con Nginx
+  frontend: 
     build:
       context: ./alikin-frontend
       dockerfile: Dockerfile

@@ -8,17 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value; 
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
+@Value("${cors.allowed-origin}")
+private String allowedOrigin;
 
-    @Value("${cors.allowed-origin}")
-    private String allowedOrigin;
-
-@Component
-@Order(0)
-public class CorsConfig implements Filter {
+@Component @Order(0) public class CorsConfig implements Filter {
 
     @Override
     public void doFilter(jakarta.servlet.ServletRequest req, jakarta.servlet.ServletResponse res, FilterChain chain)
@@ -27,7 +24,7 @@ public class CorsConfig implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        response.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+        response.setHeader("Access-Control-Allow-Origin", "https://albertoruiz-dev.tech");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");

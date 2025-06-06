@@ -40,8 +40,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final FileStorageService fileStorageService;
 
-    @Value("${app.base-url:http://localhost:8080}") // Proporciona un valor por defecto
-    private String appBaseUrl;
+    private String appBaseUrl = "https://albertoruiz-dev.tech";
 
     private String buildFullFileUrl(String relativePath) {
         if (relativePath == null || relativePath.isEmpty()) {
@@ -56,7 +55,8 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse createPostInCommunityAndHandleFiles(Long communityId, PostRequest postRequest, MultipartFile imageFile, MultipartFile songFile, Long userId) {
+    public PostResponse createPostInCommunityAndHandleFiles(Long communityId, PostRequest postRequest,
+            MultipartFile imageFile, MultipartFile songFile, Long userId) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + userId));
 
@@ -81,7 +81,7 @@ public class PostService {
             } catch (IOException e) {
                 throw new RuntimeException("Error al guardar la imagen del post: " + e.getMessage(), e);
             }
-        } else if (postRequest.getImageUrl() != null && !postRequest.getImageUrl().isEmpty()){
+        } else if (postRequest.getImageUrl() != null && !postRequest.getImageUrl().isEmpty()) {
             post.setImageUrl(postRequest.getImageUrl());
         }
 
@@ -90,9 +90,11 @@ public class PostService {
                 String relativeSongPath = fileStorageService.storeFile(songFile, "post-songs");
                 SongEntity newSong = new SongEntity();
                 String originalFilename = songFile.getOriginalFilename();
-                newSong.setTitle(originalFilename != null ? originalFilename.replaceFirst("[.][^.]+$", "") : "Canción Subida");
+                newSong.setTitle(
+                        originalFilename != null ? originalFilename.replaceFirst("[.][^.]+$", "") : "Canción Subida");
                 newSong.setArtist(user.getNickname());
-                newSong.setUrl(buildFullFileUrl(relativeSongPath)); // Usamos el campo 'url' para la URL pública del archivo
+                newSong.setUrl(buildFullFileUrl(relativeSongPath)); // Usamos el campo 'url' para la URL pública del
+                                                                    // archivo
                 newSong.setUploader(user);
                 newSong.setUploadedAt(LocalDateTime.now());
                 SongEntity savedSong = songRepository.save(newSong);
@@ -102,7 +104,8 @@ public class PostService {
             }
         } else if (postRequest.getSongId() != null) {
             SongEntity song = songRepository.findById(postRequest.getSongId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Canción existente no encontrada con ID: " + postRequest.getSongId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Canción existente no encontrada con ID: " + postRequest.getSongId()));
             post.setSong(song);
         }
 
@@ -118,17 +121,20 @@ public class PostService {
         PostEntity post = postMapper.toEntity(postRequest);
         post.setUser(user);
         post.setCreatedAt(LocalDateTime.now());
-        // voteCount y commentsCount se inicializan a 0 en PostEntity o el mapper los calcula/setea
+        // voteCount y commentsCount se inicializan a 0 en PostEntity o el mapper los
+        // calcula/setea
 
         if (postRequest.getCommunityId() != null) {
             CommunityEntity community = communityRepository.findById(postRequest.getCommunityId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada con ID: " + postRequest.getCommunityId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Comunidad no encontrada con ID: " + postRequest.getCommunityId()));
             post.setCommunity(community);
         }
 
         if (postRequest.getSongId() != null) {
             SongEntity song = songRepository.findById(postRequest.getSongId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Canción no encontrada con ID: " + postRequest.getSongId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Canción no encontrada con ID: " + postRequest.getSongId()));
             post.setSong(song);
         }
 
@@ -160,7 +166,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostResponse> getCommunityPosts(Long communityId, Pageable pageable) {
         if (pageable.getSort().isUnsorted()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdAt").descending());
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                    Sort.by("createdAt").descending());
         }
         if (!communityRepository.existsById(communityId)) {
             throw new ResourceNotFoundException("Comunidad no encontrada con ID: " + communityId);
@@ -173,7 +180,8 @@ public class PostService {
     @Transactional
     public PostResponse updatePost(Long id, PostRequest postRequest) {
         PostEntity post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Publicación no encontrada para actualizar con ID: " + id));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Publicación no encontrada para actualizar con ID: " + id));
         postMapper.updatePostFromRequest(postRequest, post);
         PostEntity updatedPost = postRepository.save(post);
         return postMapper.toPostResponse(updatedPost);
@@ -182,27 +190,34 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         PostEntity post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Publicación no encontrada para eliminar con ID: " + id));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Publicación no encontrada para eliminar con ID: " + id));
 
-        if (post.getImageUrl() != null && !post.getImageUrl().isEmpty() && !post.getImageUrl().toLowerCase().startsWith("http")) {
-            // Si no es una URL completa, podría ser una ruta relativa gestionada por FileStorageService
-            // Necesitarías extraer la parte relativa de la URL completa para pasarla a deleteFile
+        if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()
+                && !post.getImageUrl().toLowerCase().startsWith("http")) {
+            // Si no es una URL completa, podría ser una ruta relativa gestionada por
+            // FileStorageService
+            // Necesitarías extraer la parte relativa de la URL completa para pasarla a
+            // deleteFile
             String relativePath = extractRelativePath(post.getImageUrl());
             if (relativePath != null) {
                 try {
                     fileStorageService.deleteFile(relativePath);
                 } catch (Exception e) {
-                    System.err.println("Advertencia: No se pudo eliminar el archivo de imagen " + relativePath + " para el post " + id + ": " + e.getMessage());
+                    System.err.println("Advertencia: No se pudo eliminar el archivo de imagen " + relativePath
+                            + " para el post " + id + ": " + e.getMessage());
                 }
             }
         }
-        if (post.getSong() != null && post.getSong().getUrl() != null && !post.getSong().getUrl().isEmpty() && !post.getSong().getUrl().toLowerCase().startsWith("http")) {
+        if (post.getSong() != null && post.getSong().getUrl() != null && !post.getSong().getUrl().isEmpty()
+                && !post.getSong().getUrl().toLowerCase().startsWith("http")) {
             String relativePath = extractRelativePath(post.getSong().getUrl());
             if (relativePath != null) {
                 try {
                     fileStorageService.deleteFile(relativePath);
                 } catch (Exception e) {
-                    System.err.println("Advertencia: No se pudo eliminar el archivo de canción " + relativePath + " para el post " + id + ": " + e.getMessage());
+                    System.err.println("Advertencia: No se pudo eliminar el archivo de canción " + relativePath
+                            + " para el post " + id + ": " + e.getMessage());
                 }
             }
         }
@@ -210,7 +225,8 @@ public class PostService {
     }
 
     private String extractRelativePath(String fullUrl) {
-        if (fullUrl == null) return null;
+        if (fullUrl == null)
+            return null;
         String prefix = appBaseUrl + "/uploads/";
         if (fullUrl.startsWith(prefix)) {
             return fullUrl.substring(prefix.length());
@@ -249,7 +265,7 @@ public class PostService {
                     voteChange = voteValue - previousVote;
                 }
             }
-            if(finalUserVote != 0) {
+            if (finalUserVote != 0) {
                 post.getUserVotes().put(user, finalUserVote);
             }
         }
@@ -267,34 +283,46 @@ public class PostService {
 
         // Aplicar sort por defecto si no viene uno del cliente
         if (pageable.getSort().isUnsorted()) {
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdAt").descending());
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                    Sort.by("createdAt").descending());
         }
 
         List<UserEntity> following = new ArrayList<>(user.getFollowing()); // Convertir a lista para el repo
         List<CommunityEntity> joinedCommunitiesList = new ArrayList<>(user.getCommunities());
 
         Page<PostEntity> posts;
-        // Lógica para determinar qué posts mostrar (combinados, solo de seguidos, solo de comunidades, o todos)
-        // Esta es la parte más compleja y depende de tus reglas de negocio para el "feed personalizado".
-        // Ejemplo simplificado: si no sigue a nadie ni está en comunidades, muestra todos los posts ordenados.
-        // Si sigue o está en comunidades, necesitarías una query más compleja en el repositorio.
+        // Lógica para determinar qué posts mostrar (combinados, solo de seguidos, solo
+        // de comunidades, o todos)
+        // Esta es la parte más compleja y depende de tus reglas de negocio para el
+        // "feed personalizado".
+        // Ejemplo simplificado: si no sigue a nadie ni está en comunidades, muestra
+        // todos los posts ordenados.
+        // Si sigue o está en comunidades, necesitarías una query más compleja en el
+        // repositorio.
 
         if (following.isEmpty() && joinedCommunitiesList.isEmpty()) {
-            // Ya usa el método del repo que ordena, pero el pageable ahora SÍ tiene el sort.
+            // Ya usa el método del repo que ordena, pero el pageable ahora SÍ tiene el
+            // sort.
             posts = postRepository.findByOrderByCreatedAtDesc(pageable);
         } else {
-            // Aquí necesitarías una lógica más elaborada y posiblemente un método de repositorio personalizado
+            // Aquí necesitarías una lógica más elaborada y posiblemente un método de
+            // repositorio personalizado
             // que pueda filtrar por usuarios seguidos Y/O comunidades a las que pertenece,
             // y que acepte el Pageable con el Sort.
             // Ejemplo:
-            // posts = postRepository.findFeedPostsForUser(following, joinedCommunitiesList, pageable);
-            // Por ahora, como fallback, si esta lógica es compleja, usamos el general ordenado:
-            // ESTO ES UN FALLBACK, DEBERÍAS IMPLEMENTAR LA LÓGICA REAL DEL FEED PERSONALIZADO
-            posts = postRepository.findByUserInOrCommunityInOrderByCreatedAtDesc(following, joinedCommunitiesList, pageable);
+            // posts = postRepository.findFeedPostsForUser(following, joinedCommunitiesList,
+            // pageable);
+            // Por ahora, como fallback, si esta lógica es compleja, usamos el general
+            // ordenado:
+            // ESTO ES UN FALLBACK, DEBERÍAS IMPLEMENTAR LA LÓGICA REAL DEL FEED
+            // PERSONALIZADO
+            posts = postRepository.findByUserInOrCommunityInOrderByCreatedAtDesc(following, joinedCommunitiesList,
+                    pageable);
 
             // Si posts está vacío después de filtrar por "following" y "communities",
             // podrías decidir mostrar posts generales como fallback, o nada.
-            if (posts.isEmpty() && (pageable.getPageNumber() == 0)) { // Solo para la primera página del feed personalizado
+            if (posts.isEmpty() && (pageable.getPageNumber() == 0)) { // Solo para la primera página del feed
+                                                                      // personalizado
 
             }
 
@@ -308,7 +336,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public void setUserVoteStatus(PostResponse postResponse, Long userId) {
         if (postResponse == null || postResponse.getId() == null || userId == null) {
-            if(postResponse != null) postResponse.setUserVote(0);
+            if (postResponse != null)
+                postResponse.setUserVote(0);
             return;
         }
         userRepository.findById(userId).ifPresent(user -> {
@@ -316,11 +345,11 @@ public class PostService {
                 Integer voteValue = postEntity.getUserVotes().get(user);
                 postResponse.setUserVote(voteValue != null ? voteValue : 0);
             });
-            if(postRepository.findById(postResponse.getId()).isEmpty()){
+            if (postRepository.findById(postResponse.getId()).isEmpty()) {
                 postResponse.setUserVote(0);
             }
         });
-        if(userRepository.findById(userId).isEmpty()){
+        if (userRepository.findById(userId).isEmpty()) {
             postResponse.setUserVote(0);
         }
     }
@@ -328,7 +357,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public void setUserVoteStatusForPage(Page<PostResponse> postsPage, Long userId) {
         if (postsPage == null || postsPage.getContent().isEmpty() || userId == null) {
-            if (postsPage != null) postsPage.getContent().forEach(p -> p.setUserVote(0));
+            if (postsPage != null)
+                postsPage.getContent().forEach(p -> p.setUserVote(0));
             return;
         }
         UserEntity user = userRepository.findById(userId).orElse(null);
@@ -341,7 +371,8 @@ public class PostService {
                 .map(PostResponse::getId)
                 .filter(id -> id != null)
                 .collect(Collectors.toList());
-        if (postIds.isEmpty()) return;
+        if (postIds.isEmpty())
+            return;
 
         List<PostEntity> postEntities = postRepository.findAllById(postIds);
         java.util.Map<Long, PostEntity> postEntityMap = postEntities.stream()
@@ -369,10 +400,12 @@ public class PostService {
     public Page<PostResponse> getGlobalPostsWithoutCommunity(Pageable pageable, Long currentUserId) {
         Page<PostEntity> postEntities = postRepository.findGlobalPostsWithoutCommunity(pageable);
         // Mapea PostEntity a PostResponse. Asumo que tienes un mapper.
-        // Si tu PostResponse necesita información del owner, asegúrate que se cargue (JOIN FETCH en el repo o acceso en transacción)
+        // Si tu PostResponse necesita información del owner, asegúrate que se cargue
+        // (JOIN FETCH en el repo o acceso en transacción)
         Page<PostResponse> postResponses = postEntities.map(postMapper::toPostResponse); // Asumiendo un postMapper
 
-        // Opcional pero recomendado: establece el estado de voto del usuario actual para estos posts
+        // Opcional pero recomendado: establece el estado de voto del usuario actual
+        // para estos posts
         if (currentUserId != null) {
             setUserVoteStatusForPage(postResponses, currentUserId);
         }

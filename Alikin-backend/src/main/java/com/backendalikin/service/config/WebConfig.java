@@ -6,8 +6,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
- @Value("${cors.allowed-origin}")
-private String allowedOrigin;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -23,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/**")
-                .allowedOrigins(allowedOrigin) // Usa el valor inyectado
+                .allowedOrigins("*") // Usa el valor inyectado
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
