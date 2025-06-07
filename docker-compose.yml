@@ -14,6 +14,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - CORS_ALLOWED_ORIGIN=https://albertoruiz-dev.tech
+      - APP_BASE_URL=https://albertoruiz-dev.tech
     volumes:
       - media-volume:/app/uploads
     networks:
