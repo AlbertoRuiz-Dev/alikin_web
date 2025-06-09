@@ -5,9 +5,6 @@ import { Song } from './song.model';
 import { environment } from "../../enviroments/enviroment";
 
 import { Page } from '../shared/models/page.model';
-
-
-.
 export interface PageableSongRequest {
   page?: number;
   size?: number;
