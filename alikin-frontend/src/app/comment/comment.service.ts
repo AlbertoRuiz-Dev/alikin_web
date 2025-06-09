@@ -20,14 +20,4 @@ export class CommentService {
     return this.http.post<Comment>(`${this.apiUrl}/post/${postId}`, commentData);
   }
 
-  // Opcional: Métodos para actualizar y eliminar (no implementados en el componente en esta fase)
-  /*
-  updateComment(commentId: number, commentData: CommentRequest): Observable<Comment> {
-    return this.http.put<Comment>(`${this.apiUrl}/${commentId}`, commentData);
-  }
-
-  deleteComment(commentId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${commentId}`);
-  }
-  */
 }

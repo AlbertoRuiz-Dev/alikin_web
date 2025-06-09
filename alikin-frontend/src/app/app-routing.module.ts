@@ -12,19 +12,19 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: '', // Ruta principal para el FeedComponent
+        path: '',
         component: FeedComponent,
-        data: { pageType: 'feed' } // <--- AÑADIDO: Identificador para el feed principal
+        data: { pageType: 'feed' }
       },
       {
         path: 'me',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
-        data: { pageType: 'profile' } // Opcional, si necesitas identificarla
+        data: { pageType: 'profile' }
       },
       {
         path: 'communities',
         loadChildren: () => import('./communities/communities.module').then(m => m.CommunitiesModule),
-        data: { pageType: 'communities' } // Mantenemos para consistencia, indica full-width por defecto
+        data: { pageType: 'communities' }
       },
       {
         path: 'community/:id',

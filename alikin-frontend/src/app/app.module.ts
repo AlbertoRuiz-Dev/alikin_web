@@ -38,13 +38,13 @@ import {DraggableDirective} from "./shared/directives/draggable.directive";
     DraggableDirective,
     HttpClientModule,
     InfiniteScrollModule,
-    BrowserAnimationsModule, // Módulo de animaciones requerido
-    ToastrModule.forRoot({   // Configuración global de ToastrModule
-      timeOut: 5000, // Tiempo que se muestra el toast (en milisegundos)
-      positionClass: 'toast-top-right', // Posición del toast
-      preventDuplicates: true, // Evita mostrar toasts duplicados idénticos
-      progressBar: true, // Muestra una barra de progreso
-      closeButton: true, // Muestra un botón para cerrar
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true,
+      closeButton: true,
     }),
   ],
   providers: [{

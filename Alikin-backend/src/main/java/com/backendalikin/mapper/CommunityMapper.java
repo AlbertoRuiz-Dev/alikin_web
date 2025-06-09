@@ -11,8 +11,8 @@ public interface CommunityMapper {
 
     @Mapping(target = "leader", source = "leader")
     @Mapping(target = "membersCount", expression = "java(entity.getMembers().size())")
-    @Mapping(target = "isMember", ignore = true) // Esto se setea en el servicio
-    @Mapping(target = "userRole", ignore = true) // Esto se setea en el servicio
+    @Mapping(target = "isMember", ignore = true) 
+    @Mapping(target = "userRole", ignore = true) 
     @Mapping(target = "radioPlaylist", source = "radioPlaylist")
     CommunityResponse toCommunityResponse(CommunityEntity entity);
 
@@ -34,6 +34,6 @@ public interface CommunityMapper {
     @Mapping(target = "radioPlaylist", ignore = true)
     @Mapping(target = "userRoles", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "name", ignore = true) // No permitimos cambiar el nombre
+    @Mapping(target = "name", ignore = true) 
     void updateCommunityFromRequest(CommunityRequest request, @MappingTarget CommunityEntity entity);
 }

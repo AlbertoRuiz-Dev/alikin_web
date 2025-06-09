@@ -88,12 +88,10 @@ public class PlaylistService {
         PlaylistEntity entityForResponse = playlistRepository.findByIdWithOwnerAndSongs(savedPlaylist.getId()) //
                 .orElse(savedPlaylist); //
 
-        // --- LOGS DE DEPURACIÓN ---
         System.out.println("PASO 6 (Service createPlaylist): Valor de 'isPublic' en 'entityForResponse' (desde BD) ANTES de mapear a DTO: " + entityForResponse.isPublic()); //
 
         PlaylistResponse responseDto =  playlistMapper.toPlaylistResponse(entityForResponse); //
 
-        // Asumiendo que PlaylistResponse tiene un getter isPublic() porque el campo es 'boolean isPublic'
         System.out.println("PASO 7 (Service createPlaylist): Valor de 'isPublic' en 'responseDto' (DTO Java mapeado) ANTES de retornar: " + responseDto.isPublic()); //
         return responseDto;
     }
@@ -103,7 +101,6 @@ public class PlaylistService {
         PlaylistEntity playlist = playlistRepository.findByIdWithOwnerAndSongs(id) //
                 .orElseThrow(() -> new ResourceNotFoundException("Playlist no encontrada con ID: " + id));
 
-        // --- AÑADIR LOGS AQUÍ TAMBIÉN SI ESTE MÉTODO SE USA DESPUÉS DE EDITAR ---
         System.out.println("PASO 6 (Service getPlaylistById): Valor de 'isPublic' en 'playlist' (desde BD) ANTES de mapear a DTO: " + playlist.isPublic());
 
         PlaylistResponse responseDto = playlistMapper.toPlaylistResponse(playlist); //
@@ -137,7 +134,6 @@ public class PlaylistService {
         PlaylistEntity entityForResponse = playlistRepository.findByIdWithOwnerAndSongs(updatedPlaylist.getId()) //
                 .orElse(updatedPlaylist); //
 
-        // --- AÑADIR LOGS AQUÍ TAMBIÉN ---
         System.out.println("PASO 6 (Service updatePlaylist): Valor de 'isPublic' en 'entityForResponse' (desde BD) ANTES de mapear a DTO: " + entityForResponse.isPublic());
 
         PlaylistResponse responseDto = playlistMapper.toPlaylistResponse(entityForResponse); //

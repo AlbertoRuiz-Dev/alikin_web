@@ -142,7 +142,7 @@ export class CommunitiesComponent implements OnInit {
     this.communityService.joinCommunity(communityId).subscribe({
       next: (response) => {
         const successMessage = response?.message || `¡Te has unido a "${communityName}" con éxito!`;
-        this.toastr.success(successMessage, '¡Unido!'); // Notificación de éxito
+        this.toastr.success(successMessage, '¡Unido!');
 
         this.loadUserCommunities();
         this.loadAllCommunities();
@@ -151,7 +151,7 @@ export class CommunitiesComponent implements OnInit {
         console.error('Error al unirse a la comunidad:', err);
         const backendErrorMessage = err.error?.message || err.error?.error;
         const displayMessage = backendErrorMessage || err.message || 'No se pudo unir a la comunidad.';
-        this.toastr.error(displayMessage, 'Error al Unirse'); // Notificación de error
+        this.toastr.error(displayMessage, 'Error al Unirse');
       }
     });
   }

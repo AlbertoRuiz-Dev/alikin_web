@@ -15,5 +15,5 @@ public class SongRequest {
     
     private String album;
 
-    private List<String> genres; // Nombres de los géneros
+    private List<String> genres; 
 }

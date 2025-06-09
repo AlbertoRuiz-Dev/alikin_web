@@ -3,13 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Playlist } from "../models/playlist.model";
-import { Song } from "../../songs/song.model"; // Modelo completo por si lo necesitas en el futuro
+import { Song } from "../../songs/song.model";
 import { PlaylistService } from "../playlist.services";
 import { SongService } from "../../songs/song.service";
 import { Page } from "../../shared/models/page.model";
 import { SongBasic } from "../models/song-basic.model";
 import { environment } from "../../../enviroments/enviroment";
-import { MusicPlayerService } from '../../layout/music-player/music-player.service'; // <-- AÑADE ESTA IMPORTACIÓN
+import { MusicPlayerService } from '../../layout/music-player/music-player.service';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -25,7 +25,7 @@ export class PlaylistDetailComponent implements OnInit {
   availableSongsPage$: Observable<Page<Song>> = of({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 0,  first: true, last: true, empty: true, numberOfElements:0, sort: { sorted: false, unsorted: true, empty: true} });
   currentPage = 0;
   pageSize = 10;
-  mediaUrl = environment.mediaUrl; // Ya tenías esto para las imágenes de portada
+  mediaUrl = environment.mediaUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -117,14 +117,14 @@ export class PlaylistDetailComponent implements OnInit {
     });
   }
 
-  // --- MÉTODO playSong ACTUALIZADO ---
+
   playSong(songBasic: SongBasic): void {
 
     const streamUrl = `${environment.apiUrl}/songs/${songBasic.id}/stream`;
 
     const fullCoverImageUrl = songBasic.coverImageUrl
       ? (songBasic.coverImageUrl.startsWith('http') ? songBasic.coverImageUrl : this.mediaUrl +"/"+ songBasic.coverImageUrl)
-      : 'assets/images/default-song-cover.png'; // Fallback a imagen por defecto
+      : 'assets/images/default-song-cover.png';
 
     const songForPlayer = {
       title: songBasic.title,
@@ -144,8 +144,7 @@ export class PlaylistDetailComponent implements OnInit {
     if (!this.musicService.currentSong || !this.musicService.isPlaying) {
       return false;
     }
-    // Compara usando la URL de stream construida, ya que es lo que el servicio usa
-    const streamUrl = `${environment.apiUrl}/songs/${songBasic.id}/stream`; // <-- ¡AJUSTA ESTA RUTA!
+    const streamUrl = `${environment.apiUrl}/songs/${songBasic.id}/stream`;
     return this.musicService.currentSong.streamUrl === streamUrl;
   }
 

@@ -7,30 +7,30 @@ import {PlaylistDetailComponent} from "./playlist-detail/playlist-detail.compone
 
 const routes: Routes = [
   {
-    path: '', // Ruta base para playlists (ej. /playlists)
+    path: '',
     component: PlaylistListComponent,
-    data: { listType: 'currentUser' } // Para mostrar las playlists del usuario actual por defecto
+    data: { listType: 'currentUser' }
   },
   {
     path: 'new',
     component: PlaylistFormComponent
   },
   {
-    path: 'public', // Para mostrar todas las playlists públicas (ej. /playlists/public)
+    path: 'public',
     component: PlaylistListComponent,
     data: { listType: 'public' }
   },
   {
-    path: 'user/:userId', // Playlists públicas de un usuario específico (ej. /playlists/user/123)
+    path: 'user/:userId',
     component: PlaylistListComponent,
     data: { listType: 'userSpecific' }
   },
   {
-    path: ':id', // Detalle de una playlist (ej. /playlists/456)
+    path: ':id',
     component: PlaylistDetailComponent
   },
   {
-    path: ':id/edit', // Editar una playlist (ej. /playlists/456/edit)
+    path: ':id/edit',
     component: PlaylistFormComponent
   }
 ];

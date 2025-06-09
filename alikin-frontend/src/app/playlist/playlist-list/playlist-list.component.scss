@@ -1,8 +1,8 @@
-// src/app/features/playlists/components/playlist-list/playlist-list.component.scss
-@import "../../../assets/styles/_colors"; // Ajusta esta ruta si es necesario
+
+@import "../../../assets/styles/_colors";
 
 .playlist-list-container {
-  padding: 20px 0; // Más padding vertical, el horizontal lo da el contenedor padre
+  padding: 20px 0;
 }
 
 .list-header {
@@ -15,7 +15,7 @@
 
   h1 {
     margin: 0;
-    font-size: 1.8rem; // Tamaño de título principal
+    font-size: 1.8rem;
     font-weight: 700;
     color: $text-primary;
   }
@@ -26,7 +26,7 @@
   background-color: $accent-green;
   color: $text-on-accent;
   border: none;
-  border-radius: 20px; // Botón tipo "pill"
+  border-radius: 20px;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
@@ -50,18 +50,18 @@
 }
 
 .search-bar-container {
-  margin-bottom: 25px; // Espacio debajo de la barra de búsqueda
-  position: relative; // Para posicionar un ícono si lo añades
+  margin-bottom: 25px;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 18px; // Padding cómodo
-  padding-right: 40px; // Espacio para un posible ícono de búsqueda
+  padding: 12px 18px;
+  padding-right: 40px;
   background-color: $theme-bg-tertiary;
   color: $text-primary;
   border: 1px solid $border-primary-darktheme;
-  border-radius: 25px; // Input redondeado tipo "pill"
+  border-radius: 25px;
   font-size: 1rem;
   box-sizing: border-box;
   transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
@@ -72,7 +72,7 @@
 
   &:focus {
     outline: none;
-    border-color: $accent-green; // Resaltar con color de acento
+    border-color: $accent-green;
     box-shadow: 0 0 0 3px rgba($accent-green, 0.2);
   }
 }
@@ -90,29 +90,29 @@
 }
 
 .playlist-section {
-  margin-bottom: 30px; // Espacio entre secciones
+  margin-bottom: 30px;
 }
 
 .section-title {
-  font-size: 1.5rem; // Tamaño para los títulos de sección "Mis Playlists", "Otras Playlists Públicas"
-  color: $text-primary; // Usando tu variable de color
+  font-size: 1.5rem;
+  color: $text-primary;
   margin-bottom: 15px;
   padding-bottom: 8px;
-  border-bottom: 1px solid $border-primary-darktheme; // Usando tu variable de color
+  border-bottom: 1px solid $border-primary-darktheme;
 }
 
 .section-separator {
   border: 0;
   height: 1px;
-  background-color: $border-primary-darktheme; // Usando tu variable de color
-  margin: 30px 0; // Espacio generoso para el separador
+  background-color: $border-primary-darktheme;
+  margin: 30px 0;
 }
 
-.empty-state-section { // Estilo específico para mensajes de vacío dentro de las secciones
+.empty-state-section {
   text-align: center;
-  color: $text-secondary; // Usando tu variable de color
+  color: $text-secondary;
   font-size: 1rem;
   padding: 20px;
-  background-color: $theme-bg-secondary; // Usando tu variable de color
+  background-color: $theme-bg-secondary;
   border-radius: 6px;
 }

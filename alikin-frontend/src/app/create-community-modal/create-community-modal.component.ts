@@ -1,14 +1,11 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
-import { CommunityService } from "../communities/communities.service"; // Ajusta la ruta
-// Ya no usaremos CommunityRequest directamente para el envío si es FormData, pero los campos son los mismos.
-// import { CommunityRequest } from './community-request.model';
+import { CommunityService } from "../communities/communities.service";
 
-// Validador personalizado para tipo de archivo (opcional pero recomendado)
 export function fileTypeValidator(allowedTypes: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const file = control.value as File;
-    if (file && file.name) { // Solo valida si hay un archivo
+    if (file && file.name) {
       const extension = file.name.split('.').pop()?.toLowerCase();
       if (extension && !allowedTypes.map(t => t.toLowerCase()).includes(extension)) {
         return { invalidFileType: { actual: extension, expected: allowedTypes.join(', ') } };
@@ -42,8 +39,6 @@ export class CreateCommunityModalComponent implements OnInit {
     this.createCommunityForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       description: ['', [Validators.required]],
-      // El control 'imageFile' manejará el archivo, no una URL.
-      // Añadimos un validador personalizado para el tipo de archivo.
       imageFile: [null, [fileTypeValidator(['png', 'jpg', 'jpeg', 'gif'])]]
     });
   }
@@ -60,10 +55,10 @@ export class CreateCommunityModalComponent implements OnInit {
     if (fileList && fileList.length > 0) {
       const file = fileList[0];
       this.selectedFile = file;
-      this.imageFileControl?.setValue(file); // Actualiza el valor del control del formulario para validación
-      this.imageFileControl?.markAsTouched(); // Para que se muestren errores de validación si es necesario
+      this.imageFileControl?.setValue(file);
+      this.imageFileControl?.markAsTouched();
 
-      // Generar vista previa
+
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreviewUrl = reader.result;
@@ -78,9 +73,6 @@ export class CreateCommunityModalComponent implements OnInit {
     this.selectedFile = null;
     this.imagePreviewUrl = null;
     this.imageFileControl?.setValue(null);
-    // Si tienes un input de archivo, puede que necesites resetearlo también:
-    // const fileInput = document.getElementById('imageFile') as HTMLInputElement;
-    // if (fileInput) fileInput.value = "";
   }
 
   onSubmit(): void {
@@ -97,7 +89,6 @@ export class CreateCommunityModalComponent implements OnInit {
     formData.append('description', this.description?.value);
 
     if (this.selectedFile) {
-      // El backend esperará el archivo bajo un nombre específico, ej: 'imageFile'
       formData.append('imageFile', this.selectedFile, this.selectedFile.name);
     }
 

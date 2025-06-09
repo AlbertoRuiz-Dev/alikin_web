@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id, Authentication authentication) {
         UserResponse userResponse = userService.getUserById(id);
-        // Comprobar si el usuario actual sigue a este usuario
+        
         if (authentication != null) {
             String email = ((UserDetails) authentication.getPrincipal()).getUsername();
             userService.checkIfFollowing(email, id, userResponse);
@@ -85,7 +85,7 @@ public class UserController {
     @Operation(summary = "Subir o actualizar foto de perfil", description = "Sube o actualiza la foto de perfil de un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Foto de perfil actualizada correctamente",
-                    content = @Content(schema = @Schema(implementation = java.util.Map.class))), // Ejemplo: Map.of("profilePictureUrl", url)
+                    content = @Content(schema = @Schema(implementation = java.util.Map.class))), 
             @ApiResponse(responseCode = "400", description = "Archivo inválido o demasiado grande"),
             @ApiResponse(responseCode = "403", description = "Prohibido"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),

@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class DeleteCommunityModalComponent implements OnInit {
   @Input() communityName: string = '';
   @Output() close = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<string>(); // Emite el nombre ingresado
+  @Output() confirmDelete = new EventEmitter<string>();
 
   confirmForm!: FormGroup;
 
@@ -21,9 +21,8 @@ export class DeleteCommunityModalComponent implements OnInit {
     });
   }
 
-  // Función para escapar caracteres especiales para el validador de patrón
   private escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& significa toda la cadena coincidente
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   get confirmationName() {
@@ -34,7 +33,6 @@ export class DeleteCommunityModalComponent implements OnInit {
     if (this.confirmForm.valid) {
       this.confirmDelete.emit(this.confirmationName?.value);
     } else {
-      // Podrías añadir un feedback visual si el nombre no es correcto aún sin enviar
       this.confirmationName?.markAsTouched();
     }
   }

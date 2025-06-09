@@ -11,7 +11,7 @@ $gradient-end: darken($spotify-dark-gray, 3%);
 $font-family: 'Circular', 'Helvetica Neue', Arial, sans-serif;
 
 
-$text-on-accent: $white; // Ejemplo
+$text-on-accent: $white;
 
 * {
   margin: 0;
@@ -20,7 +20,7 @@ $text-on-accent: $white; // Ejemplo
 }
 
 @mixin glass-effect {
-  background: rgba($spotify-black, 0.8); // Usar variable para el color base
+  background: rgba($spotify-black, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -41,7 +41,7 @@ body {
   font-family: $font-family;
   background-color: $spotify-black;
   color: $white;
-  overflow: hidden; // Evita el scroll en el body, el scroll debe ser en .feed-area
+  overflow: hidden;
 }
 
 .layout {
@@ -51,13 +51,13 @@ body {
   background: linear-gradient(150deg, $gradient-start 0%, $gradient-end 100%);
   position: relative;
 
-  &::before { // Efecto de gradiente radial sutil en el fondo general
+  &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 100vh; // O 100% si .layout es el viewport completo
+    height: 100vh;
     background:
       radial-gradient(circle at 10% 20%, rgba($spotify-green, 0.03) 0%, transparent 50%),
       radial-gradient(circle at 90% 80%, rgba($reddit-orange, 0.03) 0%, transparent 40%);
@@ -76,7 +76,7 @@ body {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     transition: width 0.3s ease;
 
-    &::before { // Línea de acento superior en la sidebar
+    &::before {
       content: "";
       position: absolute;
       top: 0;
@@ -90,7 +90,7 @@ body {
        width: 220px;
      }
 
-    @media (max-width: 768px) { // En pantallas pequeñas, la sidebar no se expande
+    @media (max-width: 768px) {
      width: 60px;
       &:hover {
         width: 60px;
@@ -103,25 +103,25 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 5; // Por encima del ::before del .layout
-    overflow: hidden; // El main-content no debería tener scroll, lo tendrá .feed-area
+    z-index: 5;
+    overflow: hidden;
 
     .navbar {
-      height: 60px; // Altura fija del navbar
+      height: 60px;
       @include glass-effect;
       display: flex;
       align-items: center;
       padding: 0 1.5rem;
       color: $white;
       border-bottom: 1px solid rgba($spotify-lighter-gray, 0.1);
-      z-index: 20; // Navbar por encima del contenido
-      position: relative; // Para el ::after
-      flex-shrink: 0; // Evita que el navbar se encoja
+      z-index: 20;
+      position: relative;
+      flex-shrink: 0;
 
-      &::after { // Línea degradada decorativa debajo del navbar
+      &::after {
         content: '';
         position: absolute;
-        bottom: -1px; // Para que se solape o justo debajo del border-bottom
+        bottom: -1px;
         left: 0;
         width: 100%;
         height: 1px;
@@ -132,113 +132,86 @@ body {
           transparent 100%);
       }
     }
-    .reproductor-btn{ // Pequeño ajuste que tenías
+    .reproductor-btn{
       padding-left:5px ;
     }
 
-    .feed-area { // Área principal donde va el contenido scrolleable (router-outlet)
-      flex: 1; // Ocupa el espacio restante
-      overflow-y: auto; // Habilita el scroll vertical AQUÍ
-      position: relative; // Para el ::before si lo usas
-      // max-width: 100%; // No necesita max-width aquí
-      // margin: 0;
-      // padding: 0; // El padding se manejará en .feed-wrapper o .feed-area--feed-style
+    .feed-area {
+      flex: 1;
+      overflow-y: auto;
+      position: relative;
 
-      &.feed-area--feed-style { // Estilos específicos cuando la ruta del feed está activa
-        // Este padding es para el área scrolleable completa
-        padding: 1.5rem; // Espaciado general para el área del feed
-        background-color: $spotify-black; // Fondo del área scrolleable
+
+
+
+      &.feed-area--feed-style {
+        padding: 1.5rem;
+        background-color: $spotify-black;
         color: $white;
 
-        // Estilos de la barra de scroll (WebKit)
+
         &::-webkit-scrollbar {
-          width: 10px; // Ancho de la barra
+          width: 10px;
         }
         &::-webkit-scrollbar-track {
-          background: $spotify-dark-gray; // Color del track
+          background: $spotify-dark-gray;
           border-radius: 5px;
         }
         &::-webkit-scrollbar-thumb {
-          background: $spotify-light-gray; // Color del thumb
+          background: $spotify-light-gray;
           border-radius: 5px;
-          border: 2px solid $spotify-dark-gray; // Borde para efecto "flotante"
+          border: 2px solid $spotify-dark-gray;
           &:hover {
             background: lighten($spotify-light-gray, 10%);
           }
         }
 
-        // Efecto de patrón de puntos sutil en el fondo del feed-area
-        // (Este estaba antes, lo mantengo si te gusta)
-        // &::before {
-        //   content: '';
-        //   position: absolute;
-        //   top: 0;
-        //   left: 0;
-        //   width: 100%;
-        //   height: 100%; // O ajustarlo si el scroll es muy largo
-        //   background-image:
-        //     radial-gradient(rgba($spotify-green, 0.03) 1px, transparent 1px),
-        //     radial-gradient(rgba($reddit-orange, 0.02) 1px, transparent 1px);
-        //   background-size: 20px 20px;
-        //   background-position: 0 0, 10px 10px;
-        //   pointer-events: none;
-        //   z-index: -1; // Detrás del contenido
-        // }
       }
 
-      &.communities-layout-active { // Estilos si la sección de comunidades está activa
-        padding: 0; // Sin padding si la vista de comunidad maneja el suyo
+      &.communities-layout-active {
+        padding: 0;
       }
     }
 
-    .feed-wrapper { // Contenedor directo del router-outlet
+    .feed-wrapper {
       width: 100%;
-      // height: 100%; // No necesita height 100% si .feed-area ya es scrolleable
-      // padding: 0; // El padding se define en los modificadores
-      background: transparent; // Por defecto transparente
-      // border-radius: 0;
 
-      &.feed-wrapper--feed-style { // Estilos para el wrapper cuando el feed está activo
-        max-width: 850px; // <<<<<<< CAMBIO PRINCIPAL AQUÍ: Aumentado de 700px a 850px
-        margin: 0 auto; // Centra el contenido del feed
-        padding: 0 1rem; // Padding horizontal interno si quieres que el contenido no toque los bordes del max-width
-        // Si el padding ya está en .feed-area--feed-style, este podría ser 0.
-        // O si quieres un "canal" de contenido, puedes quitar el padding de .feed-area--feed-style
-        // y ponerlo aquí. Por ahora, lo dejo.
-        // background: $spotify-dark-gray; // El fondo del "canal" de posts
-        // border-radius: 12px; // Si quieres que el "canal" tenga bordes redondeados
-        // Este background y border-radius harían que el feed se vea como una columna separada
-        // dentro del .feed-area. Si quieres que los posts ocupen el .feed-area--feed-style
-        // directamente, puedes quitar el background y border-radius de aquí.
-        // Por ahora, lo comentaré para que los posts usen el fondo de .feed-area--feed-style.
+
+      background: transparent;
+
+
+      &.feed-wrapper--feed-style {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 0 1rem;
       }
 
-      &.communities-wrapper-active { // Estilos si la sección de comunidades está activa
-        // padding: 0; // Ya estaba
-        // background: transparent; // Ya estaba
-        // border-radius: 0; // Ya estaba
-        max-width: 100%; // La vista de comunidad puede necesitar ancho completo
+      &.communities-wrapper-active {
+
+
+
+        max-width: 100%;
       }
     }
-    .music-player { // Reproductor de música en el footer
-      position: fixed; // Lo fijamos al bottom
+    .music-player {
+      position: fixed;
       bottom: 0;
-      // Ajusta 'left' si la sidebar tiene un ancho fijo que no cambia con hover,
-      // o si la sidebar se superpone. Si la sidebar empuja el contenido:
-      left: 80px; // Ancho inicial de la sidebar
+
+
+      left: 80px;
 
       right: 0;
-      height: 90px; // Altura del reproductor
-      z-index: 100; // Por encima de otro contenido
-      background: transparent; // El componente app-music-player tendrá su propio fondo
-      flex-shrink: 0; // Evita que el reproductor se encoja
+      height: 90px;
+      z-index: 100;
+      background: transparent;
+      flex-shrink: 0;
     }
   }
 }
 
-// Estilos para los items de la sidebar (usando ::ng-deep si es necesario desde un componente padre)
-// Estos estilos ya los tenías y parecen correctos para un componente app-sidebar
-:host ::ng-deep .sidebar { // Si estos estilos están en layout.component.scss y app-sidebar es hijo
+
+
+:host ::ng-deep .sidebar {
   .nav-item {
     margin-bottom: 1.2rem;
     width: 56px;
@@ -262,7 +235,7 @@ body {
       @include neon-glow($spotify-green);
     }
 
-    &.highlighted { // Para notificaciones o items destacados
+    &.highlighted {
       background: linear-gradient(135deg, $reddit-orange, darken($reddit-orange, 15%));
       color: $white;
       @include neon-glow($reddit-orange);
@@ -270,8 +243,8 @@ body {
   }
 }
 
-// Animación para las ondas de audio (ya lo tenías)
-:host ::ng-deep .music-player { // Si estos estilos están en layout.component.scss
+
+:host ::ng-deep .music-player {
   .audio-waves {
     display: flex;
     align-items: center;
@@ -287,7 +260,7 @@ body {
 
       @for $i from 1 through 5 {
         &:nth-child(#{$i}) {
-          height: (60% + $i * 8%); // Asegúrate que esto no exceda 100% o se vea raro
+          height: (60% + $i * 8%);
           animation-duration: (700ms - $i * 80ms);
         }
       }
@@ -297,7 +270,7 @@ body {
 
 @keyframes sound {
   0% {
-    height: 10%; // O un valor mínimo
+    height: 10%;
     opacity: 0.3;
   }
   100% {
@@ -306,8 +279,8 @@ body {
   }
 }
 
-// Animación de pulso (ya la tenías)
-.pulse { // Esta clase se puede aplicar a elementos que necesiten un efecto de pulso
+
+.pulse {
   position: relative;
 
   &::after {
@@ -317,43 +290,43 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background: rgba($spotify-green, 0.5); // Color del pulso
-    border-radius: inherit; // Heredar el border-radius del elemento padre
+    background: rgba($spotify-green, 0.5);
+    border-radius: inherit;
     transform: scale(1);
-    opacity: 0.7; // Opacidad inicial
+    opacity: 0.7;
     animation: pulse 2s infinite;
-    pointer-events: none; // Para que no interfiera con clicks
+    pointer-events: none;
   }
 }
 
 @keyframes pulse {
   0% {
-    transform: scale(0.95); // Empezar un poco más pequeño
+    transform: scale(0.95);
     opacity: 0.7;
   }
-  70% { // Mantener el efecto un poco más
-    transform: scale(1.3); // Escalar más
+  70% {
+    transform: scale(1.3);
     opacity: 0;
   }
   100% {
-    transform: scale(0.95); // Volver al inicio
+    transform: scale(0.95);
     opacity: 0;
   }
 }
 
-// Media queries para responsividad (ya las tenías, las reviso)
-@media (max-width: 992px) { // Para tablets
+
+@media (max-width: 992px) {
   .layout {
     .sidebar {
-      // width: 70px; // Ya estaba
+
     }
   }
 }
 
-@media (max-width: 768px) { // Para móviles (ajustado el breakpoint de 576 a 768)
+@media (max-width: 768px) {
   .layout {
     .sidebar {
-      width: 60px; // Sidebar más delgada en móviles y sin expansión al hover
+      width: 60px;
       &:hover {
         width: 60px;
       }
@@ -367,19 +340,19 @@ body {
 
       .feed-area {
         &.feed-area--feed-style {
-          padding: 1rem; // Menos padding en móviles
+          padding: 1rem;
         }
       }
       .feed-wrapper {
         &.feed-wrapper--feed-style {
-          padding: 0 0.5rem; // Menos padding horizontal interno en móviles
-          // max-width: 100%; // Opcional: permitir que ocupe todo el ancho disponible menos el padding
+          padding: 0 0.5rem;
+
         }
       }
 
       .music-player {
-        height: 75px; // Reproductor un poco menos alto en móviles
-        left: 60px; // Ajustar al nuevo ancho de la sidebar
+        height: 75px;
+        left: 60px;
       }
     }
   }

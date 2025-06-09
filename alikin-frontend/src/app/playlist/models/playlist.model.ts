@@ -4,7 +4,7 @@ import {UserBasic} from "./user-basic.model";
 export interface PlaylistRequest {
   name: string;
   description?: string;
-  public: boolean; // <-- CAMBIADO de isPublic a public
+  public: boolean;
   songIds?: number[];
 }
 
@@ -14,8 +14,8 @@ export interface Playlist {
   name: string;
   description?: string;
   coverImageUrl?: string;
-  createdAt: string | null; // Ajustado por tu JSON de ejemplo que tenía null
-  public: boolean; // <-- CAMBIADO de isPublic a public
+  createdAt: string | null;
+  public: boolean;
   owner: UserBasic;
   songs: SongBasic[];
 }

@@ -11,7 +11,7 @@ public interface PlaylistMapper {
 
     @Mapping(target = "owner", source = "owner") //
     @Mapping(target = "songs", source = "songs") //
-    @Mapping(target = "isPublic", source = "public") // <-- AÑADIDO: Mapeo explícito para isPublic
+    @Mapping(target = "isPublic", source = "public")
     PlaylistResponse toPlaylistResponse(PlaylistEntity entity);
 
     PlaylistBasicResponse toPlaylistBasicResponse(PlaylistEntity entity); //
@@ -20,7 +20,7 @@ public interface PlaylistMapper {
     @Mapping(target = "owner", ignore = true) //
     @Mapping(target = "community", ignore = true) //
     @Mapping(target = "createdAt", ignore = true) //
-    @Mapping(target = "songs", ignore = true) // Los songs se manejan por separado
+    @Mapping(target = "songs", ignore = true) //
     PlaylistEntity toEntity(PlaylistRequest request);
 
     @Mapping(target = "id", ignore = true) //

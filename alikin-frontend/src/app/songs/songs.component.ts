@@ -175,10 +175,10 @@ export class SongsComponent implements OnInit, OnDestroy {
       URL.revokeObjectURL(this.coverPreviewUrl);
     }
     this.coverPreviewUrl = null;
-    this.selectedCoverFile = undefined; // También limpiar el archivo seleccionado
-    // Si tienes un ViewChild para el input de portada, también resetea su valor
-    // const coverInput = document.getElementById('tuInputIdDePortada') as HTMLInputElement;
-    // if (coverInput) coverInput.value = "";
+    this.selectedCoverFile = undefined;
+
+
+
   }
 
   onSubmitUpload(): void {
@@ -208,13 +208,13 @@ export class SongsComponent implements OnInit, OnDestroy {
     formData.append('audioFile', this.selectedSongFile);
 
     if (this.selectedCoverFile) {
-      formData.append('coverImage', this.selectedCoverFile); // Asegúrate que esta clave coincida con el backend
+      formData.append('coverImage', this.selectedCoverFile);
     }
 
-    this.songService.uploadSong(formData) // Usar el método del servicio
+    this.songService.uploadSong(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response: Song) => { // La respuesta ahora es Song
+        next: (response: Song) => {
           this.uploadSuccess = `Canción "${response.title}" subida con éxito!`;
           this.isSubmittingUpload = false;
           this.toggleUploadForm();
@@ -247,7 +247,7 @@ export class SongsComponent implements OnInit, OnDestroy {
     this.musicPlayerService.playSong({
         title: song.title,
         artist: song.artist || 'Artista Desconocido',
-        coverImageUrl: this.getSongCoverUrl(song.coverImageUrl) || "", // Asegura que no sea null
+        coverImageUrl: this.getSongCoverUrl(song.coverImageUrl) || "",
         streamUrl: streamUrl
       }
     );

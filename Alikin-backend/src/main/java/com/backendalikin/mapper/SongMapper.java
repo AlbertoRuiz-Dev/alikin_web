@@ -16,12 +16,12 @@ public interface SongMapper {
     SongBasicResponse toSongBasicResponse(SongEntity entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "url", ignore = true) // Esto se setea en el servicio
-    @Mapping(target = "coverImageUrl", ignore = true) // Esto se setea en el servicio
-    @Mapping(target = "duration", ignore = true) // Esto se calcula en el servicio
+    @Mapping(target = "url", ignore = true) 
+    @Mapping(target = "coverImageUrl", ignore = true) 
+    @Mapping(target = "duration", ignore = true) 
     @Mapping(target = "uploadedAt", ignore = true)
     @Mapping(target = "uploader", ignore = true)
-    @Mapping(target = "genres", ignore = true) // Los géneros se manejan por separado
+    @Mapping(target = "genres", ignore = true)
     @Mapping(target = "playlists", ignore = true)
     SongEntity toEntity(SongRequest request);
 

@@ -8,7 +8,6 @@ export class FeedControlService {
   private loadMoreRequest = new Subject<void>();
   loadMoreRequest$ = this.loadMoreRequest.asObservable();
 
-  // BehaviorSubjects para que FeedComponent informe a LayoutComponent del estado
   private isLoading = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoading.asObservable();
 
@@ -17,14 +16,12 @@ export class FeedControlService {
 
   constructor() { }
 
-  // LayoutComponent llama a esto cuando el scroll llega al final
-  requestLoadMore(): void {
-    console.log('FeedControlService: requestLoadMore() llamado.'); // <--- AÑADE ESTO
 
+  requestLoadMore(): void {
     this.loadMoreRequest.next();
   }
 
-  // FeedComponent llama a esto para actualizar el estado
+
   setLoading(loading: boolean): void {
     this.isLoading.next(loading);
   }

@@ -72,7 +72,6 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        // Verificar si el token está en la blacklist
         if (blacklistService.isTokenBlacklisted(token)) {
             return false;
         }

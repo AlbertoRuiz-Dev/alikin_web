@@ -1,4 +1,4 @@
-// src/app/features/playlists/services/playlist.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import {Playlist, PlaylistRequest} from "./models/playlist.model";
 import {MessageResponse} from "../models/message-response.model";
 
 @Injectable({
-  providedIn: 'root' // O proveer en PlaylistsModule
+  providedIn: 'root'
 })
 export class PlaylistService {
   private apiUrl = `${environment.apiUrl}/playlists`; //

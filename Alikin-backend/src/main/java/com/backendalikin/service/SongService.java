@@ -41,21 +41,17 @@ public class SongService {
         UserEntity uploader = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Validar archivos
         if (audioFile.isEmpty()) {
             throw new RuntimeException("El archivo de audio no puede estar vacío");
         }
 
-        // Crear nueva entidad de canción
         SongEntity song = songMapper.toEntity(songRequest);
         song.setUploader(uploader);
         song.setUploadedAt(LocalDateTime.now());
 
-        // Guardar archivo de audio
         String audioUrl = fileStorageService.storeFile(audioFile, "songs");
         song.setUrl(audioUrl);
 
-        // Guardar imagen de portada si existe
         if (coverImage != null && !coverImage.isEmpty()) {
             String coverImageUrl = fileStorageService.storeFile(coverImage, "covers");
             song.setCoverImageUrl(coverImageUrl);
@@ -63,10 +59,8 @@ public class SongService {
             song.setCoverImageUrl(null);
         }
 
-        // Calcular duración (esto es un ejemplo, en un caso real necesitarías una biblioteca para obtener la duración)
-        song.setDuration(180); // 3 minutos como ejemplo
+        song.setDuration(180);
 
-        // Procesar géneros
         if (songRequest.getGenres() != null && !songRequest.getGenres().isEmpty()) {
             Set<GenreEntity> genres = new HashSet<>();
             for (String genreName : songRequest.getGenres()) {
@@ -108,7 +102,7 @@ public class SongService {
 
         songMapper.updateSongFromRequest(songRequest, song);
 
-        // Actualizar géneros si se proporcionan
+        
         if (songRequest.getGenres() != null && !songRequest.getGenres().isEmpty()) {
             Set<GenreEntity> genres = new HashSet<>();
             for (String genreName : songRequest.getGenres()) {
@@ -132,7 +126,7 @@ public class SongService {
         SongEntity song = songRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Canción no encontrada"));
 
-        // Eliminar archivos asociados
+        
         if (song.getUrl() != null) {
             fileStorageService.deleteFile(song.getUrl());
         }
@@ -156,11 +150,9 @@ public class SongService {
 
     @Transactional(readOnly = true)
     public List<SongResponse> searchSongs(String query) {
-        // Buscar por título o artista
         List<SongEntity> titleMatches = songRepository.findByTitleContainingIgnoreCase(query);
         List<SongEntity> artistMatches = songRepository.findByArtistContainingIgnoreCase(query);
 
-        // Combinar resultados sin duplicados
         Set<SongEntity> combinedResults = new HashSet<>(titleMatches);
         combinedResults.addAll(artistMatches);
 

@@ -1,5 +1,5 @@
-// src/app/features/playlists/components/playlist-detail/playlist-detail.component.scss
-@import "../../../assets/styles/_colors"; // Ajusta esta ruta si es necesario
+
+@import "../../../assets/styles/_colors";
 
 .detail-container {
   padding: 20px 0;
@@ -7,17 +7,17 @@
 
 .playlist-main-header {
   display: flex;
-  align-items: flex-start; // Alinea arriba para descripciones largas
+  align-items: flex-start;
   margin-bottom: 30px;
-  gap: 25px; // Espacio entre imagen e info
+  gap: 25px;
 
   .main-cover {
-    width: 200px; // Portada un poco más grande
+    width: 200px;
     height: 200px;
     border-radius: 8px;
     object-fit: cover;
-    background-color: $theme-bg-tertiary; // Placeholder
-    flex-shrink: 0; // Evitar que se encoja
+    background-color: $theme-bg-tertiary;
+    flex-shrink: 0;
   }
 
   .main-info {
@@ -35,9 +35,9 @@
       font-size: 0.95rem;
       line-height: 1.5;
       &.description {
-        color: $text-secondary; // Un poco más de énfasis que un 'muted'
+        color: $text-secondary;
         margin-bottom: 12px;
-        max-width: 60ch; // Limitar ancho de descripción
+        max-width: 60ch;
       }
       &.created-at {
         font-size: 0.8rem;
@@ -50,12 +50,12 @@
 .actions-main {
   margin-top: 20px;
   display: flex;
-  gap: 12px; // Espacio entre botones
+  gap: 12px;
 
   .action-btn {
     padding: 10px 20px;
     border: none;
-    border-radius: 20px; // Botones tipo "pill"
+    border-radius: 20px;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 600;
@@ -96,7 +96,7 @@
   .available-songs-list {
     list-style: none;
     padding: 0;
-    max-height: 250px; // Altura máxima para la lista desplazable
+    max-height: 250px;
     overflow-y: auto;
     margin-bottom: 15px;
     border: 1px solid $border-primary-darktheme;
@@ -125,7 +125,7 @@
       font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      line-height: 26px; // Centrar el '+'
+      line-height: 26px;
       transition: background-color 0.2s;
       &:hover { background-color: $accent-green-hover; }
     }
@@ -188,7 +188,7 @@
   display: flex;
   align-items: center;
   padding: 12px 8px;
-  border-bottom: 1px solid $border-primary-darktheme; // Líneas más sutiles
+  border-bottom: 1px solid $border-primary-darktheme;
   transition: background-color 0.2s ease-out;
 
   &:last-child { border-bottom: none; }
@@ -225,18 +225,18 @@
   .song-duration {
     font-size: 0.85rem;
     color: $text-muted;
-    margin: 0 15px; // Espacio a ambos lados
+    margin: 0 15px;
     flex-shrink: 0;
   }
   .song-actions-detail {
     display: flex;
     align-items: center;
-    gap: 8px; // Espacio entre iconos de acción
+    gap: 8px;
     .action-icon {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 1.1rem; // Iconos un poco más pequeños
+      font-size: 1.1rem;
       padding: 5px;
       color: $text-secondary;
       transition: color 0.2s ease-out;
@@ -257,13 +257,13 @@
 }
 
 .error-banner,
-.loading-state { // Asegurar que los banners de error y carga ocupen el ancho necesario
+.loading-state {
   &.full-width-error, &.full-width-loading {
-    margin: 20px 0; // Si están fuera de un contenedor específico
-    background-color: $status-error-bg; // Ejemplo para error
+    margin: 20px 0;
+    background-color: $status-error-bg;
     color: $status-error;
     border: 1px solid $status-error-border;
-    // ... otros estilos de banner ya definidos
+
   }
   &.full-width-loading {
     background-color: $theme-bg-secondary;

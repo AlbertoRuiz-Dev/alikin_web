@@ -6,8 +6,6 @@ import { PostService } from '../post.service';
 import { PostResponse } from "../post.model";
 import { CommentService } from "../../comment/comment.service";
 import { Comment } from '../../comment/comment.model';
-// Asume que tienes un AuthService para obtener el ID del usuario actual
-// import { AuthService } from '../../auth/auth.service'; // Descomenta y ajusta la ruta
 
 @Component({
   selector: 'app-post-item',
@@ -16,7 +14,7 @@ import { Comment } from '../../comment/comment.model';
 })
 export class PostItemComponent implements OnInit {
   @Input() post!: PostResponse;
-  @Input() currentUserId: number | null = null; // Alternativa si no usas AuthService
+  @Input() currentUserId: number | null = null;
   @Output() postDeleted = new EventEmitter<number>();
 
   expandedImageUrl?: string;
@@ -39,7 +37,6 @@ export class PostItemComponent implements OnInit {
     private commentService: CommentService,
     private fb: FormBuilder,
     private elementRef: ElementRef
-    // private authService: AuthService // Descomenta si usas AuthService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +46,7 @@ export class PostItemComponent implements OnInit {
 
 
     if (this.currentUserId != null && this.post?.user?.id != null) {
-      // Convertir ambos a número para una comparación segura
+
       const numCurrentUserId = +this.currentUserId;
       const numPostOwnerId = +this.post.user.id;
 
@@ -81,7 +78,6 @@ export class PostItemComponent implements OnInit {
         next: () => {
           this.postDeleted.emit(this.post.id);
           this.showDropdown = false;
-          // Considera mostrar un toast de éxito aquí
         },
         error: (err) => {
           console.error('Error al eliminar el post:', err);

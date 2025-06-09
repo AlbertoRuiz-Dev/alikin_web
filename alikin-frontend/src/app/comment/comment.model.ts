@@ -10,7 +10,7 @@ export interface Comment {
   id: number;
   content: string;
   user: UserBasic;
-  createdAt: string; // O Date, si prefieres convertirla
+  createdAt: string;
 }
 
 export interface CommentRequest {

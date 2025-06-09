@@ -6,7 +6,7 @@ import {CommunityResponse} from "./community-response";
 import {MessageResponse} from "./message-response.model";
 import {UserResponse} from "../models/user.model";
 import {RadioStationSearchResult} from "../community-detail/RadioStationSearchResult.model";
-import {map} from "rxjs/operators"; // Asegúrate que la ruta sea correcta
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -55,42 +55,42 @@ export class CommunityService {
   setCommunityRadioStation(communityId: number, stationName: string, streamUrl: string, stationLogoUrl: string | null): Observable<CommunityResponse> {
     const endpoint = `${this.apiUrl}/${communityId}/radio-station`;
     let params = new HttpParams()
-      .set('stationName', stationName) // Asegúrate que stationName tenga valor
-      .set('streamUrl', streamUrl);     // Asegúrate que streamUrl tenga valor
+      .set('stationName', stationName)
+      .set('streamUrl', streamUrl);
     if (stationLogoUrl) {
       params = params.set('stationLogoUrl', stationLogoUrl);
     }
-    return this.http.put<CommunityResponse>(endpoint, null, { params }); // null como body si los params van en la URL
+    return this.http.put<CommunityResponse>(endpoint, null, { params });
   }
 
 
   searchRadioStationsAPI(searchTerm: string): Observable<RadioStationSearchResult[]> {
     if (!searchTerm || !searchTerm.trim()) {
-      return of([]); // Devuelve un observable con un array vacío si no hay término
+      return of([]);
     }
 
     const params = new HttpParams()
       .set('name', searchTerm)
-      .set('limit', '25') // Puedes ajustar el límite
+      .set('limit', '25')
       .set('hidebroken', 'true')
       .set('order', 'clickcount')
       .set('reverse', 'true');
 
-    // Es recomendable usar los servidores DNS de Radio Browser o elegir uno cercano.
-    // Ver documentación: https://api.radio-browser.info/
+
+
     const radioApiUrl = 'https://de2.api.radio-browser.info/json/stations/search';
 
     return this.http.get<any[]>(radioApiUrl, { params }).pipe(
       map(apiStationsArray => {
-        if (!apiStationsArray) return []; // Manejar respuesta vacía o inesperada de la API
+        if (!apiStationsArray) return [];
         return apiStationsArray.map(station => ({
           id: station.stationuuid,
           name: station.name,
           streamUrl: station.url_resolved || station.url,
           favicon: station.favicon || null,
-          country: station.countrycode || station.country || '', // countrycode es más estándar
+          country: station.countrycode || station.country || '',
           tags: station.tags || ''
-        } as RadioStationSearchResult)); // Casting al tipo definido
+        } as RadioStationSearchResult));
       })
     );
   }
@@ -99,19 +99,15 @@ export class CommunityService {
   kickCommunityMember(communityId: number, memberId: number): Observable<MessageResponse> {
     return this.http.delete<MessageResponse>(`${this.apiUrl}/${communityId}/members/${memberId}`)
       .pipe(
-        tap(response => console.log('Respuesta de expulsión:', response)), // Opcional: para debugging
-        catchError(this.handleError) // Manejo de errores
+        catchError(this.handleError)
       );
   }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido.';
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente o de red
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // El backend devolvió un código de respuesta no exitoso.
-      // El cuerpo de la respuesta puede contener pistas sobre qué salió mal.
       if (error.status === 0) {
         errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión de red.';
       } else if (error.error && error.error.message) {
@@ -121,7 +117,7 @@ export class CommunityService {
       }
     }
     console.error(errorMessage);
-    return throwError(() => new Error(errorMessage)); // Devuelve un observable con un error descriptivo
+    return throwError(() => new Error(errorMessage));
   }
 
 }

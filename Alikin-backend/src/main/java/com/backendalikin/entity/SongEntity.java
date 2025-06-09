@@ -24,7 +24,7 @@ public class SongEntity {
     private String album;
     private String url;
     private String coverImageUrl;
-    private int duration; // en segundos
+    private int duration; 
     
     @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt;

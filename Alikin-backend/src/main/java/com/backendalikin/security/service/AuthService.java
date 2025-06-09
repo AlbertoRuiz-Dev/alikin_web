@@ -28,7 +28,7 @@ public class AuthService {
     private final CustomUserDetailsService userDetailsService;
 
     public MessageResponse registerUser(SignupRequest signupRequest) {
-        // Validar que el email y el nickname no existan
+        
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new RuntimeException("El email ya está en uso");
         }
@@ -37,25 +37,25 @@ public class AuthService {
             throw new RuntimeException("El nickname ya está en uso");
         }
 
-        // Crear el nuevo usuario
+        
         UserEntity user = new UserEntity();
         user.setName(signupRequest.getName());
         user.setLastName(signupRequest.getLastName());
         user.setNickname(signupRequest.getNickname());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
-        user.setRole(Role.USER); // Por defecto, el usuario tendrá el rol USER
-        user.setEmailVerified(false); // Por defecto, el email no está verificado
-        user.setProfilePictureUrl(null); // Imagen de perfil por defecto
+        user.setRole(Role.USER); 
+        user.setEmailVerified(false); 
+        user.setProfilePictureUrl(null); 
 
-        // Guardar el usuario
+        
         userRepository.save(user);
 
         return new MessageResponse("Usuario registrado exitosamente");
     }
 
     public AuthResponse authenticateUser(LoginRequest loginRequest) {
-        // 🔐 Autenticar usando email o nickname + contraseña
+        
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsernameOrEmail(),
@@ -63,20 +63,20 @@ public class AuthService {
                 )
         );
 
-        // ✔️ Establecer autenticación en el contexto
+        
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 🔍 Obtener detalles del usuario autenticado
+        
         org.springframework.security.core.userdetails.UserDetails userDetails =
                 (org.springframework.security.core.userdetails.UserDetails) authentication.getPrincipal();
 
-        // 🔑 Generar JWT válido
+        
         String jwt = tokenProvider.generateToken(userDetails);
 
-        // 📄 Obtener datos completos del usuario (desde la BDD)
+        
         UserEntity user = userDetailsService.getUserEntityByUsernameOrEmail(loginRequest.getUsernameOrEmail());
 
-        // 📦 Construir respuesta con token y datos del usuario
+        
         return AuthResponse.builder()
                 .accessToken(jwt)
                 .tokenType("Bearer")

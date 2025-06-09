@@ -116,9 +116,8 @@ public class CommunityService {
         CommunityEntity community = communityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada para actualizar con ID: " + id));
 
-        // Actualizar nombre y descripción desde el DTO
+        
         if (communityRequestData.getName() != null && !communityRequestData.getName().isEmpty()) {
-            // Considera validar si el nuevo nombre ya existe y no es la misma comunidad
             if (!community.getName().equalsIgnoreCase(communityRequestData.getName()) &&
                     communityRepository.existsByName(communityRequestData.getName())) {
                 throw new RuntimeException("Ya existe otra comunidad con el nombre: " + communityRequestData.getName());
@@ -129,36 +128,31 @@ public class CommunityService {
             community.setDescription(communityRequestData.getDescription());
         }
 
-        // Manejar la actualización de la imagen
+        
         if (imageFile != null && !imageFile.isEmpty()) {
-            String oldImagePath = community.getImageUrl(); // Guardar la ruta de la imagen antigua
+            String oldImagePath = community.getImageUrl(); 
 
-            // Guardar la nueva imagen
+            
             String newImagePath;
             try {
                 newImagePath = fileStorageService.storeFile(imageFile, "community-images");
-                community.setImageUrl(newImagePath); // Actualizar la URL de la imagen en la entidad
+                community.setImageUrl(newImagePath); 
             } catch (IOException e) {
                 throw new RuntimeException("Error al guardar la nueva imagen de la comunidad: " + e.getMessage(), e);
             } catch (RuntimeException e) {
                 throw new RuntimeException("Error al procesar el nuevo archivo de imagen: " + e.getMessage(), e);
             }
 
-            // Si había una imagen antigua y es diferente de la nueva (y no es una URL por defecto), eliminarla
             if (oldImagePath != null && !oldImagePath.isEmpty() && !oldImagePath.equals(newImagePath)) {
-                // Asegúrate de que fileStorageService.deleteFile no lance una excepción fatal
-                // si el archivo no existe, o manéjalo adecuadamente.
+
                 try {
                     fileStorageService.deleteFile(oldImagePath);
                 } catch (Exception e) {
-                    // Loggear la advertencia pero continuar, ya que la nueva imagen se guardó.
+                    
                     System.err.println("Advertencia: No se pudo eliminar la imagen antigua: " + oldImagePath + ". Error: " + e.getMessage());
                 }
             }
         }
-        // Si imageFile es null pero se quiere explícitamente quitar la imagen (ej. un checkbox "eliminar imagen actual")
-        // podrías añadir lógica aquí para setear community.setImageUrl(null) y borrar el archivo existente.
-        // Por ahora, si imageFile es null, no se modifica la imagen existente.
 
         CommunityEntity updatedCommunity = communityRepository.save(community);
         return communityMapper.toCommunityResponse(updatedCommunity);
@@ -308,7 +302,7 @@ public class CommunityService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada con ID: " + communityId));
         community.setRadioStationName(stationName);
         community.setRadioStreamUrl(streamUrl);
-        community.setRadioStationLogoUrl(stationLogoUrl); // puede ser null
+        community.setRadioStationLogoUrl(stationLogoUrl); 
 
         CommunityEntity updatedCommunity = communityRepository.save(community);
         return communityMapper.toCommunityResponse(updatedCommunity);

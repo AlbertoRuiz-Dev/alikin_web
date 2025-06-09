@@ -21,5 +21,5 @@ public class Playlist {
     private boolean isPublic;
     private User owner;
     private Community community;
-    private List<Song> songs = new ArrayList<>(); // Usamos List para mantener orden
+    private List<Song> songs = new ArrayList<>();
 }

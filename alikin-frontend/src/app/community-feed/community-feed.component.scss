@@ -19,7 +19,7 @@ $black: #000000;
 }
 
 .community-feed-wrapper {
-  padding-bottom: 90px; // Espacio para .new-post-bar si es position:fixed
+  padding-bottom: 90px;
   box-sizing: border-box;
 }
 
@@ -299,7 +299,7 @@ $black: #000000;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   }
 
-  &.highlighted-post { // Si mantienes la clase highlighted-post a este nivel
+  &.highlighted-post {
     border-left: 4px solid $accent-orange;
     background-color: lighten($theme-bg-secondary, 3%);
   }
@@ -310,49 +310,49 @@ $black: #000000;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  width: 40px; // Ajusta el ancho según necesites
-  flex-shrink: 0; // Para que no se encoja
+  width: 40px;
+  flex-shrink: 0;
 
   .vote-btn {
-    background: transparent; // O el color que prefieras para el fondo del botón
-    border: none; // O un borde sutil: 1px solid $border-primary-darktheme;
+    background: transparent;
+    border: none;
     padding: 0.3rem;
     cursor: pointer;
-    border-radius: 4px; // O 50% si quieres botones redondos
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s ease, transform 0.1s ease;
 
-    img { // Estilo para tus SVGs de upvote/downvote
-      width: 18px; // Ajusta el tamaño
+    img {
+      width: 18px;
       height: 18px;
-      // filter: invert(70%) sepia(10%) saturate(200%) hue-rotate(0deg) brightness(95%) contrast(90%); // Ejemplo para hacerlo grisáceo
+
     }
 
     &:hover {
-      background-color: $theme-bg-tertiary; // Color al pasar el ratón
+      background-color: $theme-bg-tertiary;
       transform: scale(1.1);
     }
 
     &.active {
-      // Estilos para cuando el voto está activo
-      // Ejemplo: cambiar el color del ícono o del fondo del botón
-      img { // Si quieres que el SVG cambie de color cuando está activo
-        // filter: invert(50%) sepia(90%) saturate(5000%) hue-rotate(100deg) brightness(100%) contrast(100%); // Ejemplo para verde
+
+
+      img {
+
       }
       &.upvote.active img {
-        // filter: invert(60%) sepia(98%) saturate(3305%) hue-rotate(359deg) brightness(102%) contrast(101%); // Naranja
+
       }
       &.downvote.active img {
-        // filter: invert(50%) sepia(80%) saturate(600%) hue-rotate(180deg) brightness(90%) contrast(90%); // Azulado o un color de "negativo"
+
       }
     }
-    &.upvote:hover:not(.active) img { // Efecto hover en el SVG cuando no está activo
-      // filter: invert(60%) sepia(98%) saturate(3305%) hue-rotate(359deg) brightness(102%) contrast(101%); // Naranja
+    &.upvote:hover:not(.active) img {
+
     }
     &.downvote:hover:not(.active) img {
-      // filter: invert(50%) sepia(80%) saturate(600%) hue-rotate(180deg) brightness(90%) contrast(90%); // Azulado
+
     }
   }
 
@@ -528,12 +528,12 @@ $black: #000000;
         color: $accent-orange;
       }
     }
-    .interaction-btn.comments { // Clase específica para el span/botón de comentarios
-      // puedes añadir estilos específicos aquí si lo necesitas
+    .interaction-btn.comments {
+
     }
   }
 
-  // Estilos para la sección de comentarios dentro de cada .post-item
+
   .comments-section-feed {
     margin-top: 15px;
     padding-top: 15px;
@@ -582,8 +582,8 @@ $black: #000000;
       border-radius: 6px;
       font-family: inherit;
       font-size: 0.9rem;
-      resize: none; // IMPORTANTE: Evita que el usuario pueda estirar el textarea
-      min-height: 60px; // Altura mínima inicial
+      resize: none;
+      min-height: 60px;
       line-height: 1.5;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
       &::placeholder {
@@ -606,9 +606,9 @@ $black: #000000;
       font-size: 0.75rem;
       color: $status-error;
       padding-top: 3px;
-      min-height: 1em; // Evita saltos de layout
+      min-height: 1em;
     }
-    .comment-submit-error { // Específico para el error general del submit
+    .comment-submit-error {
       margin-top: 5px;
     }
 
@@ -664,14 +664,14 @@ $black: #000000;
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 0.9rem; // Tamaño de la inicial
+        font-size: 0.9rem;
         border: 1px solid darken($border-primary-darktheme, 5%);
       }
       .comment-content-wrapper-feed {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        background-color: lighten($theme-bg-secondary, 2%); // Fondo sutil para cada comentario
+        background-color: lighten($theme-bg-secondary, 2%);
         padding: 8px 12px;
         border-radius: 6px;
 
@@ -782,8 +782,8 @@ $scrollbar-thumb-color: $theme-bg-tertiary;
 $scrollbar-thumb-hover-color: lighten($scrollbar-thumb-color, 10%);
 $scrollbar-width: 6px;
 
-.post-list-container { // Estilos de scrollbar para el contenedor de posts si es que tiene scroll propio
-  // Actualmente es visible, así que estos estilos aplicarían al scroll de .community-main-content si se movieran allí
+.post-list-container {
+
   &::-webkit-scrollbar {
     width: $scrollbar-width;
     height: $scrollbar-width;
@@ -805,46 +805,46 @@ $scrollbar-width: 6px;
   }
 }
 .post-menu-container-feed {
-  position: relative; // Necesario para el posicionamiento absoluto del dropdown
-  margin-left: auto; // Empuja el botón del menú a la derecha en el .post-author
+  position: relative;
+  margin-left: auto;
 
   .menu-btn-feed {
     background: none;
     border: none;
-    padding: 0.5rem; // Ajusta si es necesario
+    padding: 0.5rem;
     cursor: pointer;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .icon { // SVG de tres puntos
-      width: 20px; // Ajusta el tamaño de tu SVG
+    .icon {
+      width: 20px;
       height: 20px;
-      fill: $text-secondary; // Usa tus variables de color
+      fill: $text-secondary;
       transition: fill 0.2s ease;
     }
 
     &:hover {
-      background-color: $theme-bg-tertiary; // Usa tus variables
+      background-color: $theme-bg-tertiary;
       .icon {
-        fill: $text-primary; // Usa tus variables
+        fill: $text-primary;
       }
     }
   }
 
   .dropdown-menu-feed {
     position: absolute;
-    top: 100%; // Justo debajo del botón
-    right: 0; // Alineado a la derecha
-    background-color: $theme-bg-tertiary; // Usa tus variables
-    border: 1px solid $border-primary-darktheme; // Usa tus variables
+    top: 100%;
+    right: 0;
+    background-color: $theme-bg-tertiary;
+    border: 1px solid $border-primary-darktheme;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 100; // Por encima de otros elementos
-    width: max-content; // Ancho según contenido
-    min-width: 150px; // Ancho mínimo
-    padding: 0.5rem 0; // Padding vertical para la lista
+    z-index: 100;
+    width: max-content;
+    min-width: 150px;
+    padding: 0.5rem 0;
 
     ul {
       list-style: none;
@@ -853,20 +853,16 @@ $scrollbar-width: 6px;
 
       li {
         padding: 0.6rem 1rem;
-        color: $text-secondary; // Usa tus variables
+        color: $text-secondary;
         cursor: pointer;
         font-size: 0.9rem;
         transition: background-color 0.2s ease, color 0.2s ease;
 
         &:hover {
-          background-color: lighten($theme-bg-tertiary, 5%); // Aclarar un poco el fondo al pasar el ratón
-          color: $text-primary; // Cambiar color del texto
+          background-color: lighten($theme-bg-tertiary, 5%);
+          color: $text-primary;
         }
-        // Podrías tener un estilo específico para la opción de eliminar
-        // &:last-child:hover {
-        //   background-color: rgba($status-error, 0.1);
-        //   color: $status-error;
-        // }
+
       }
     }
   }

@@ -1,17 +1,17 @@
 @import "../../assets/styles/_colors.scss";
 
-// Estilos base del modal (puedes reusar o extender los de CreateCommunityModal)
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba($black, 0.85); // Más oscuro para alerta
+  background-color: rgba($black, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1060; // Por encima de otros modales si es necesario
+  z-index: 1060;
   backdrop-filter: blur(4px);
   padding: 20px;
   box-sizing: border-box;
@@ -30,7 +30,7 @@
   text-align: left;
 
   h2 {
-    color: $status-error; // Título en color de error
+    color: $status-error;
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;

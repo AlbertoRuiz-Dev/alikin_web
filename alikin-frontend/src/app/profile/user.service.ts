@@ -20,8 +20,8 @@ export class UserService {
           user.createdAt = new Date(user.createdAt);
         }
         if (user.birthDate && typeof user.birthDate === 'string') {
-          // Mantener como string YYYY-MM-DD si el input de fecha lo prefiere, o convertir a Date
-          // user.birthDate = new Date(user.birthDate);
+
+
         }
         return user;
       }),
@@ -40,15 +40,15 @@ export class UserService {
 
   uploadProfilePicture(userId: number, imageFile: File): Observable<{ profilePictureUrl: string }> {
     const formData = new FormData();
-    formData.append('avatarFile', imageFile, imageFile.name); // El backend esperará 'avatarFile' u otro nombre
-    // Asume un endpoint como PUT /api/users/{userId}/avatar para la imagen
+    formData.append('avatarFile', imageFile, imageFile.name);
+
     return this.http.put<{ profilePictureUrl: string }>(`${this.apiUrl}/${userId}/avatar`, formData).pipe(
       catchError(this.handleError)
     );
   }
 
   removeProfilePicture(userId: number): Observable<UserProfile> {
-    // Asume un endpoint como DELETE /api/users/{userId}/avatar para eliminar la imagen
+
     return this.http.delete<UserProfile>(`${this.apiUrl}/${userId}/avatar`).pipe(
       catchError(this.handleError)
     );

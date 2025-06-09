@@ -4,8 +4,8 @@ import { PostResponse } from '../post/post.model';
 import { Subject, throwError } from 'rxjs';
 import { takeUntil, finalize, catchError } from 'rxjs/operators';
 import { FeedControlService } from "../layout/feed-control.services";
-// Asume que tienes un AuthService para obtener el ID del usuario actual
-// import { AuthService } from '../auth/auth.service';
+
+
 
 @Component({
   selector: 'app-feed',
@@ -21,12 +21,11 @@ export class FeedComponent implements OnInit, OnDestroy {
   error: string | null = null;
   private destroy$ = new Subject<void>();
 
-  currentUserId: number | null = null; // Para pasarlo a post-item
+  currentUserId: number | null = null;
 
   constructor(
     private postService: PostService,
     private feedControlService: FeedControlService
-    // private authService: AuthService // Descomenta si usas AuthService
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +38,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         if (parsedUser && typeof parsedUser.id !== 'undefined' && parsedUser.id !== null) {
           const idValue = parsedUser.id;
 
-          const numericId = Number(idValue); // Intentar convertir a número explícitamente
+          const numericId = Number(idValue);
 
           if (!isNaN(numericId)) {
             this.currentUserId = numericId;

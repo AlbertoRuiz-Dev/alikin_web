@@ -1,5 +1,5 @@
-// Variables inspiradas en Reddit y Spotify
-$reddit-orange: #ff4500; // Dejamos esta por si se usa en algún elemento común
+
+$reddit-orange: #ff4500;
 $spotify-green: #1db954;
 $dark-background: #121212;
 $light-text: #ffffff;
@@ -9,7 +9,7 @@ $error-red: #e91429;
 $border-radius: 8px;
 $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 
-// Variable de acento principal para esta página
+
 $primary-accent: $spotify-green;
 
 :host {
@@ -17,7 +17,7 @@ $primary-accent: $spotify-green;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('../../../assets/bgi/register.jpg'); // Ruta a tu imagen de fondo para register
+  background-image: url('../../../assets/bgi/register.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -28,12 +28,12 @@ $primary-accent: $spotify-green;
 
 .logo-app {
   display: block;
-  margin: 0 auto 30px auto; // Centrado y con espacio debajo
-  width: 150px; // Ajusta según necesites
+  margin: 0 auto 30px auto;
+  width: 150px;
   height: auto;
 }
 
-// Estilos para el contenedor principal
+
 .signup-container {
   width: 100%;
   max-width: 420px;
@@ -54,7 +54,7 @@ $primary-accent: $spotify-green;
     left: 0;
     right: 0;
     height: 4px;
-    background: $primary-accent; // Usar el color de acento principal
+    background: $primary-accent;
     border-radius: $border-radius $border-radius 0 0;
   }
 
@@ -85,8 +85,8 @@ $primary-accent: $spotify-green;
 
       &:focus {
         outline: none;
-        border-color: $primary-accent; // Usar el color de acento principal
-        box-shadow: 0 0 0 3px rgba($primary-accent, 0.3); // Usar el color de acento principal
+        border-color: $primary-accent;
+        box-shadow: 0 0 0 3px rgba($primary-accent, 0.3);
       }
 
       &::placeholder {
@@ -104,8 +104,8 @@ $primary-accent: $spotify-green;
       padding: 14px;
       border-radius: 30px;
       border: none;
-      background: $primary-accent; // Usar el color de acento principal
-      color: $dark-background; // Texto oscuro para contraste con verde (o $light-text si prefieres)
+      background: $primary-accent;
+      color: $dark-background;
       font-weight: 700;
       font-size: 16px;
       text-transform: uppercase;
@@ -114,7 +114,7 @@ $primary-accent: $spotify-green;
       transition: all 0.2s ease;
 
       &:hover:not(:disabled) {
-        background: lighten($primary-accent, 7%); // Usar el color de acento principal
+        background: lighten($primary-accent, 7%);
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       }
@@ -147,14 +147,14 @@ $primary-accent: $spotify-green;
       border-radius: 20px;
       border: none;
       background: transparent;
-      color: $primary-accent; // Usar el color de acento principal
+      color: $primary-accent;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: rgba($primary-accent, 0.1); // Usar el color de acento principal
+        background: rgba($primary-accent, 0.1);
         text-decoration: underline;
       }
     }
@@ -162,7 +162,7 @@ $primary-accent: $spotify-green;
 }
 
 
-// Responsive
+
 @media (max-width: 576px) {
   :host {
     padding: 10px;

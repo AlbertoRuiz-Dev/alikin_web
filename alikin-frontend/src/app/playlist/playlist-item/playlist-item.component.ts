@@ -9,12 +9,11 @@ import {environment} from "../../../enviroments/enviroment";
 })
 export class PlaylistItemComponent {
   @Input() playlist!: Playlist;
-  // Eventos para interactuar con el componente padre (lista)
   @Output() viewDetails = new EventEmitter<number>();
   @Output() editPlaylist = new EventEmitter<number>();
   @Output() deletePlaylist = new EventEmitter<number>();
 
-  defaultCoverUrl = 'assets/images/default-playlist-cover.jpg'; // Define una imagen por defecto
+  defaultCoverUrl = 'assets/images/default-playlist-cover.jpg';
   mediaUrl = environment.serverURL;
 
   onViewDetails(): void {
@@ -26,7 +25,6 @@ export class PlaylistItemComponent {
   }
 
   onDelete(): void {
-    // Podrías añadir una confirmación aquí antes de emitir
     if (confirm(`¿Estás seguro de eliminar la playlist "${this.playlist.name}"?`)) {
       this.deletePlaylist.emit(this.playlist.id);
     }

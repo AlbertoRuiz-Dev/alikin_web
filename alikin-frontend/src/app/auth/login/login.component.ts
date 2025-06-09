@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: ['', Validators.required]
     });
 
-    // Estilo dinámico de fondo
+
     document.body.style.backgroundImage = "url('/assets/bgi/bgauth.jpg')";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpiar estilos del body
+
     document.body.style.backgroundImage = '';
     document.body.style.backgroundSize = '';
     document.body.style.backgroundPosition = '';
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: (res) => {
         localStorage.setItem('accessToken', res.accessToken);
 
-        // Obtener datos del usuario autenticado
+
         this.http.get(`${environment.apiUrl}/users/me`).subscribe({
           next: (user) => {
             localStorage.setItem('currentUser', JSON.stringify(user));

@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
   username: string = '';
   menuVisible: boolean = false;
   userAvatar: string | null = null;
-  private userSubscription: Subscription | undefined; // Para gestionar la suscripción
+  private userSubscription: Subscription | undefined;
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {}
 
@@ -27,14 +27,11 @@ export class NavbarComponent implements OnInit {
 
           if (userProfile.profilePictureUrl) {
             const relativePath = userProfile.profilePictureUrl;
-            // Comprobar si ya es una URL absoluta
             if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
               this.userAvatar = relativePath;
             } else {
-              // Construir la URL completa con environment.mediaUrl
-              // Asegura que environment.mediaUrl esté definido y no termine con / si relativePath empieza con /
-              const baseUrl = (environment.mediaUrl || '').replace(/\/$/, ''); // Elimina la barra final de baseUrl si existe
-              const path = relativePath.replace(/^\//, ''); // Elimina la barra inicial de path si existe
+              const baseUrl = (environment.mediaUrl || '').replace(/\/$/, '');
+              const path = relativePath.replace(/^\//, '');
               this.userAvatar = `${baseUrl}/${path}`;
             }
           } else {
@@ -55,7 +52,7 @@ export class NavbarComponent implements OnInit {
 
 
   navigateToProfile(): void {
-    this.router.navigate(['/me']); // O tu ruta de perfil
+    this.router.navigate(['/me']);
     this.closeMenu();
   }
 

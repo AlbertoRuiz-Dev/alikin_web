@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (fileList && fileList.length > 0) {
       const file = fileList[0];
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      const maxSize = 2 * 1024 * 1024; // 2MB
+      const maxSize = 2 * 1024 * 1024;
 
       if (!allowedTypes.includes(file.type)) {
         this.toastr.error('Tipo de archivo no permitido (solo JPG, PNG, GIF).', 'Error de Archivo');
@@ -150,7 +150,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         return;
       }
       this.selectedProfileImageFile = file;
-      this._imageMarkedForRemoval = false; // Si selecciona una nueva, no está marcada para borrado
+      this._imageMarkedForRemoval = false;
       const reader = new FileReader();
       reader.onload = () => {
         this.profileImagePreviewUrl = reader.result;
@@ -170,7 +170,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   removeProfileImage(): void {
     this.selectedProfileImageFile = null;
     this.profileImagePreviewUrl = this.getDefaultProfileImage();
-    this._imageMarkedForRemoval = true; // Marcar para borrado
+    this._imageMarkedForRemoval = true;
     this.clearFileInput();
     this.cdr.detectChanges();
   }
@@ -194,36 +194,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.selectedProfileImageFile) {
       imageOperation$ = this.userService.uploadProfilePicture(this.currentUser.id, this.selectedProfileImageFile).pipe(
         tap(response => {
-          // Actualizar la URL de la imagen en currentUser si la subida es exitosa y devuelve la URL
+
           if (this.currentUser && response.profilePictureUrl) {
             this.currentUser.profilePictureUrl = response.profilePictureUrl;
           }
         }),
         catchError(err => {
           this.toastr.error(err.message || 'Error al subir la nueva imagen de perfil.', 'Error de Imagen');
-          this.isSubmitting = false; // Detener si la imagen falla
+          this.isSubmitting = false;
           this.cdr.detectChanges();
-          return throwError(() => err); // Propagar el error para detener el flujo
+          return throwError(() => err);
         })
       );
     } else if (this._imageMarkedForRemoval && this.currentUser.profilePictureUrl) {
       imageOperation$ = this.userService.removeProfilePicture(this.currentUser.id).pipe(
         tap(updatedUser => {
           if (this.currentUser) {
-            this.currentUser.profilePictureUrl = null; // O la URL por defecto que devuelva el backend
+            this.currentUser.profilePictureUrl = null;
           }
         }),
         catchError(err => {
           this.toastr.error(err.message || 'Error al eliminar la imagen de perfil.', 'Error de Imagen');
-          // Considerar si continuar con la actualización de datos o detenerse
-          // this.isSubmitting = false; this.cdr.detectChanges(); return throwError(() => err);
-          return of(null); // Continuar con la actualización de datos aunque esto falle
+          return of(null);
         })
       );
     }
 
     imageOperation$.pipe(
-      switchMap(() => { // Ejecutar después de la operación de imagen (si la hubo)
+      switchMap(() => {
         const profileUpdateData: UserProfileUpdate = {
           nickname: this.profileForm.value.nickname,
           name: this.profileForm.value.name || null,
@@ -231,7 +229,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           phoneNumber: this.profileForm.value.phoneNumber || null,
           birthDate: this.profileForm.value.birthDate ? this.formatDateForInput(this.profileForm.value.birthDate) : null,
           bio: this.profileForm.value.bio || null,
-          // No enviamos removeProfilePicture aquí, ya se manejó con su propia llamada si es necesario
+
         };
         if (this.currentUser && this.currentUser.id){
           return this.userService.updateUserProfileData(this.currentUser.id, profileUpdateData);
@@ -247,9 +245,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       })
     ).subscribe({
       next: (finalUpdatedUser) => {
-        // finalUpdatedUser será el resultado de updateUserProfileData
-        // Si la operación de imagen actualizó currentUser, usamos ese.
-        this.currentUser = finalUpdatedUser ? finalUpdatedUser : this.currentUser; // Actualizar con la respuesta más reciente
+
+
+        this.currentUser = finalUpdatedUser ? finalUpdatedUser : this.currentUser;
 
         if (this.currentUser) {
           this.updateFormValues(this.currentUser);
@@ -291,7 +289,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             next: () => {
               this.toastr.success('Tu cuenta ha sido eliminada permanentemente.', 'Cuenta Eliminada');
               this.authService.logout();
-              // this.router.navigate(['/auth/login']); Idealmente el logout ya redirige
+
             },
             error: (err) => {
               console.error('Error al eliminar la cuenta:', err);
@@ -310,12 +308,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
       return relativePath;
     }
-    // Ajusta esto según cómo tu backend y FileStorageService construyan las URLs
+
     return `${this.backendImageUrlBase}${relativePath.startsWith('/') ? '' : '/'}${relativePath}`;
   }
 
   getDefaultProfileImage(): string {
-    return 'assets/images/default-profile.jpg'; // Asegúrate que esta ruta es correcta
+    return 'assets/images/default-profile.jpg';
   }
 
   ngOnDestroy(): void {

@@ -4,9 +4,9 @@ export interface Community {
   description: string;
   imageUrl: string | null;
   createdAt: string | null;
-  leader: any; // puedes crear un modelo User si quieres tiparlo mejor
+  leader: any;
   membersCount: number;
   userRole: string | null;
-  radioPlaylist: any; // puedes crear un modelo Playlist si quieres tiparlo mejor
+  radioPlaylist: any;
   member: boolean;
 }

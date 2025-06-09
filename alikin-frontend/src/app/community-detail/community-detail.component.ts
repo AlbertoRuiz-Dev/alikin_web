@@ -6,7 +6,7 @@ import { MusicPlayerService } from '../layout/music-player/music-player.service'
 import { environment } from "../../enviroments/enviroment";
 import { RadioStationSearchResult } from "./RadioStationSearchResult.model";
 import { CommunityService } from "../communities/communities.service";
-// import { AuthService } from '../../auth/auth.service'; // Ejemplo si tuvieras AuthService
+
 
 @Component({
   selector: 'app-community-detail',
@@ -40,7 +40,7 @@ export class CommunityDetailComponent implements OnInit {
   radioSaveError: string | null = null;
   radioSaveSuccess: string | null = null;
 
-  currentUserIdForFeed: number | null = null; // NUEVA PROPIEDAD
+  currentUserIdForFeed: number | null = null;
 
   public get isThisCommunityRadioCurrentlyPlaying(): boolean {
     if (!this.community?.radioPlaylist?.streamUrl || !this.musicService.currentSong) {
@@ -56,11 +56,11 @@ export class CommunityDetailComponent implements OnInit {
     private communityService: CommunityService,
     private fb: FormBuilder,
     private musicService: MusicPlayerService
-    // private authService: AuthService // Si tuvieras AuthService
+
   ) {}
 
   ngOnInit(): void {
-    // Obtener currentUserId (ejemplo usando localStorage, idealmente AuthService)
+
     const userFromStorage = localStorage.getItem('currentUser');
     if (userFromStorage) {
       try {
@@ -172,7 +172,7 @@ export class CommunityDetailComponent implements OnInit {
     if (fileList && fileList.length > 0) {
       const file = fileList[0];
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      const maxSize = 2 * 1024 * 1024; // 2MB
+      const maxSize = 2 * 1024 * 1024;
 
       if (!allowedTypes.includes(file.type)) {
         this.settingsSubmitError = 'Tipo de archivo no permitido (solo JPG, PNG, GIF).';
@@ -334,7 +334,6 @@ export class CommunityDetailComponent implements OnInit {
       favicon
     ).subscribe({
       next: (updatedCommunityFromServer: CommunityResponse) => {
-        console.log('Respuesta del backend (updatedCommunityFromServer al guardar radio):', JSON.stringify(updatedCommunityFromServer, null, 2));
         const communityDataForState: CommunityResponse = {
           ...(this.community || {} as CommunityResponse),
           ...updatedCommunityFromServer,

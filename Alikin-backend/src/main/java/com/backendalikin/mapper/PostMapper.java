@@ -12,7 +12,7 @@ public interface PostMapper {
     @Mapping(target = "song", source = "song")
     @Mapping(target = "community", source = "community")
     @Mapping(target = "commentsCount", expression = "java(entity.getComments() != null ? entity.getComments().size() : 0)")
-    @Mapping(target = "userVote", ignore = true) // Esto se setea en el servicio
+    @Mapping(target = "userVote", ignore = true) 
     PostResponse toPostResponse(PostEntity entity);
 
     @Mapping(target = "id", ignore = true)

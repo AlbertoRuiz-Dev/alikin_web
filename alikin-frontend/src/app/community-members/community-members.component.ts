@@ -11,9 +11,7 @@ import {ToastrService} from "ngx-toastr";
 export class CommunityMembersComponent implements OnInit, OnChanges {
   @Input() communityId!: number;
   @Input() currentUserRole: 'LEADER' | 'MEMBER' | 'VISITOR' = 'VISITOR';
-  // Podrías pasar el ID del usuario actual para no mostrar "Echar" en sí mismo,
-  // o para resaltar al usuario actual en la lista.
-  // @Input() currentUserId: number | null = null;
+
 
   members: UserResponse[] = [];
   isLoading = false;
@@ -61,7 +59,7 @@ export class CommunityMembersComponent implements OnInit, OnChanges {
          next: () => {
           this.toastr.success(`"${memberName}" ha sido expulsado de la comunidad.`);
            alert(`"${memberName}" ha sido expulsado de la comunidad.`);
-           this.loadMembers(); // Recargar la lista
+           this.loadMembers();
          },
          error: (err) => {
            this.toastr.error(`No se pudo echar a "${memberName}".`);

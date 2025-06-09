@@ -50,7 +50,7 @@ public class PostEntity {
     )
     @MapKeyJoinColumn(name = "user_id")
     @Column(name = "vote_value")
-    private Map<UserEntity, Integer> userVotes = new HashMap<>(); // 1 para upvote, -1 para downvote
+    private Map<UserEntity, Integer> userVotes = new HashMap<>(); 
     
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)  
     private List<CommentEntity> comments = new ArrayList<>();

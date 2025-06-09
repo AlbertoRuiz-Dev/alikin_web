@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Renderer2, OnInit } from '@angular
 
 @Directive({
   selector: '[appDraggable]',
-  standalone: true, // Si usas Angular 14+ y quieres directivas standalone
+  standalone: true,
 })
 export class DraggableDirective implements OnInit {
   private isDragging = false;
@@ -16,34 +16,33 @@ export class DraggableDirective implements OnInit {
 
   ngOnInit() {
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grab');
-    this.renderer.setStyle(this.el.nativeElement, 'userSelect', 'none'); // Evitar selección de texto al arrastrar
+    this.renderer.setStyle(this.el.nativeElement, 'userSelect', 'none');
   }
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
-    // Permitir arrastrar solo con el botón izquierdo del ratón y si no es un input/textarea/button/select
+
     const targetTagName = (event.target as HTMLElement).tagName.toLowerCase();
     if (event.button === 0 && !['input', 'textarea', 'button', 'select', 'label', 'img'].includes(targetTagName) &&
       !(event.target as HTMLElement).closest('button, input, textarea, select, label, img')
     ) {
-      event.preventDefault(); // Prevenir comportamiento por defecto como selección de texto
+      event.preventDefault();
 
       this.isDragging = true;
       this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grabbing');
 
       const rect = this.el.nativeElement.getBoundingClientRect();
 
-      // Si es la primera vez que se arrastra o no tenemos top/left, calcular desde fixed position
       if (this.currentTop === null || this.currentLeft === null) {
         this.currentTop = rect.top;
         this.currentLeft = rect.left;
 
-        // Cambiar a posicionamiento top/left explícito si se usaba bottom/right o transform
+
         this.renderer.setStyle(this.el.nativeElement, 'top', `${this.currentTop}px`);
         this.renderer.setStyle(this.el.nativeElement, 'left', `${this.currentLeft}px`);
         this.renderer.setStyle(this.el.nativeElement, 'bottom', 'auto');
         this.renderer.setStyle(this.el.nativeElement, 'right', 'auto');
-        this.renderer.setStyle(this.el.nativeElement, 'transform', 'none'); // Anular transform si lo había
+        this.renderer.setStyle(this.el.nativeElement, 'transform', 'none');
       }
 
       this.offsetX = event.clientX - this.currentLeft;
@@ -61,7 +60,6 @@ export class DraggableDirective implements OnInit {
     let newLeft = event.clientX - this.offsetX;
     let newTop = event.clientY - this.offsetY;
 
-    // Opcional: Limitar el arrastre a los bordes de la ventana
     const elementRect = this.el.nativeElement.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -93,11 +91,9 @@ export class DraggableDirective implements OnInit {
     if (!['input', 'textarea', 'button', 'select', 'label', 'img'].includes(targetTagName) &&
       !(event.target as HTMLElement).closest('button, input, textarea, select, label, img')
     ) {
-      // Prevenir scroll de la página mientras se arrastra en táctil
-      // event.preventDefault(); // Cuidado: esto puede impedir el scroll si no es el inicio del drag
 
       this.isDragging = true;
-      this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grabbing'); // Aunque no se vea en táctil, por consistencia
+      this.renderer.setStyle(this.el.nativeElement, 'cursor', 'grabbing');
 
       const touch = event.touches[0];
       const rect = this.el.nativeElement.getBoundingClientRect();
@@ -122,7 +118,6 @@ export class DraggableDirective implements OnInit {
     if (!this.isDragging) {
       return;
     }
-    // Prevenir scroll de la página mientras se arrastra en táctil, AQUI sí
     event.preventDefault();
 
 

@@ -5,7 +5,7 @@ import com.backendalikin.dto.response.UserResponse;
 import com.backendalikin.entity.UserEntity;
 import com.backendalikin.mapper.UserMapper;
 import com.backendalikin.repository.UserRepository;
-import com.backendalikin.service.FileStorageService; // Actualizado
+import com.backendalikin.service.FileStorageService; 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -171,7 +171,7 @@ public class UserService {
 
         String storedFilePath;
         try {
-            String subdirectory = "user_avatars/" + userId; // Subdirectorio específico para avatares de este usuario
+            String subdirectory = "user_avatars/" + userId; 
             storedFilePath = fileStorageService.storeFile(avatarFile, subdirectory);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el archivo de avatar para el usuario " + userId + ": " + e.getMessage(), e);

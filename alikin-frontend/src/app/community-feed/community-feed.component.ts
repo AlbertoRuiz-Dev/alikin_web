@@ -17,7 +17,7 @@ import { Comment as AppComment, CommentRequest } from '../comment/comment.model'
 export class CommunityFeedComponent implements OnInit, OnChanges {
   @Input() communityId!: number;
   @Input() currentUserRole: 'LEADER' | 'MEMBER' | 'VISITOR' = 'VISITOR';
-  @Input() currentUserId: number | null = null; // NUEVO INPUT para el ID del usuario actual
+  @Input() currentUserId: number | null = null;
 
   posts: PostResponse[] = [];
   isLoadingPosts = false;
@@ -38,7 +38,7 @@ export class CommunityFeedComponent implements OnInit, OnChanges {
   isLoadingSongs = false;
   commentForms = new Map<number, FormGroup>();
 
-  showDropdownMap = new Map<number, boolean>(); // Para manejar desplegables por post
+  showDropdownMap = new Map<number, boolean>();
 
   private readonly backendImageUrlBase = `${environment.mediaUrl || 'http://localhost:8080'}`;
 
@@ -51,25 +51,25 @@ export class CommunityFeedComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private musicService: MusicPlayerService,
     private commentService: CommentService,
-    private elementRef: ElementRef // Para cerrar desplegables al hacer clic fuera
+    private elementRef: ElementRef
   ) {}
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    // Cerrar todos los desplegables si el clic es fuera de ellos
-    // Esto es una implementación simple. Podría mejorarse para no cerrar si se
-    // hace clic en el propio botón que lo abrió de nuevo.
+
+
+
     let closeAll = true;
     this.showDropdownMap.forEach((value, key) => {
-      // Necesitaríamos una referencia al elemento del botón del menú para una lógica más precisa
-      // Por ahora, cerramos todos si el clic no está contenido en este componente general.
-      // Para una mejor UX, cada post-item (si fuera un componente) manejaría su propio clic fuera.
-      // Como aquí es una lista, es más complejo.
+
+
+
+
     });
-    // Para simplificar: si un dropdown está abierto y se hace clic en cualquier lugar,
-    // la lógica de toggleDropdown debería manejar el cierre si se hace clic en el mismo botón.
-    // Un clic genérico fuera podría requerir que cada botón tenga una ref.
-    // Vamos a mantenerlo simple: el toggle lo maneja, y el borrado lo cierra.
+
+
+
+
   }
 
 
@@ -93,8 +93,8 @@ export class CommunityFeedComponent implements OnInit, OnChanges {
         this.loadAvailableSongs();
       }
     }
-    // Podríamos necesitar recalcular isOwner para los posts si currentUserId cambia,
-    // pero currentUserId se establece en ngOnInit del padre y se pasa una vez.
+
+
   }
 
   isOwner(post: PostResponse): boolean {
@@ -105,9 +105,9 @@ export class CommunityFeedComponent implements OnInit, OnChanges {
   }
 
   toggleDropdown(post: PostResponse, event: Event): void {
-    event.stopPropagation(); // Evita que el HostListener lo cierre inmediatamente
+    event.stopPropagation();
     const currentState = this.showDropdownMap.get(post.id) || false;
-    // Cierra todos los demás desplegables
+
     this.showDropdownMap.forEach((value, key) => {
       if (key !== post.id) {
         this.showDropdownMap.set(key, false);
@@ -122,17 +122,16 @@ export class CommunityFeedComponent implements OnInit, OnChanges {
       this.postService.deletePost(postId).subscribe({
         next: () => {
           this.posts = this.posts.filter(p => p.id !== postId);
-          this.showDropdownMap.set(postId, false); // Cierra el desplegable
-          // Considera mostrar un toast de éxito
+          this.showDropdownMap.set(postId, false);
         },
         error: (err) => {
           console.error('Error al eliminar el post:', err);
           alert(err.error?.message || 'No se pudo eliminar el post.');
-          this.showDropdownMap.set(postId, false); // Cierra el desplegable
+          this.showDropdownMap.set(postId, false);
         }
       });
     } else {
-      this.showDropdownMap.set(postId, false); // Cierra si cancela
+      this.showDropdownMap.set(postId, false);
     }
   }
 

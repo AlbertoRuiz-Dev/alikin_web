@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TokenBlacklistService {
 
-    // Map que guarda tokens invalidados y su tiempo de expiración
+    
     private final Map<String, Instant> blacklistedTokens = new ConcurrentHashMap<>();
 
     /**

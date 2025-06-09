@@ -1,15 +1,13 @@
-// Variables inspiradas en Reddit y Spotify
 $reddit-orange: #ff4500;
-$spotify-green: #1db954; // Dejamos esta por si se usa en algún elemento común
+$spotify-green: #1db954;
 $dark-background: #121212;
 $light-text: #ffffff;
 $medium-gray: #282828;
 $light-gray: #b3b3b3;
 $error-red: #e91429;
 $border-radius: 8px;
-$box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); // Sombra un poco más oscura
+$box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 
-// Variable de acento principal para esta página
 $primary-accent: $reddit-orange;
 
 :host {
@@ -21,30 +19,30 @@ $primary-accent: $reddit-orange;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding: 20px; // Espacio por si el contenido es más grande que la pantalla
+  padding: 20px;
   box-sizing: border-box;
 }
 
 .logo-app {
   display: block;
   margin: 0 auto 30px auto;
-  width: 150px; // Ajusta según necesites
+  width: 150px;
   height: auto;
 }
 
-// Estilos para el contenedor principal
+
 .login-container {
   width: 100%;
-  max-width: 420px; // Ancho más típico para formularios de login/registro
+  max-width: 420px;
   padding: 30px 35px;
-  background-color: rgba($dark-background, 0.9); // Fondo semi-transparente para que se vea el fondo de la página
-  backdrop-filter: blur(8px); // Efecto vidrio
+  background-color: rgba($dark-background, 0.9);
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: $border-radius;
   box-shadow: $box-shadow;
   color: $light-text;
   font-family: 'Circular', 'Helvetica Neue', Arial, sans-serif;
-  position: relative; // Para el pseudo-elemento ::before
+  position: relative;
 
   &::before {
     content: "";
@@ -53,7 +51,7 @@ $primary-accent: $reddit-orange;
     left: 0;
     right: 0;
     height: 4px;
-    background: $primary-accent; // Usar el color de acento principal
+    background: $primary-accent;
     border-radius: $border-radius $border-radius 0 0;
   }
 
@@ -69,7 +67,7 @@ $primary-accent: $reddit-orange;
   form {
     display: flex;
     flex-direction: column;
-    gap: 18px; // Un poco más de espacio entre inputs
+    gap: 18px;
 
     input {
       padding: 14px 16px;
@@ -78,14 +76,14 @@ $primary-accent: $reddit-orange;
       background-color: $medium-gray;
       color: $light-text;
       font-size: 16px;
-      width: 100%; // Que ocupe todo el ancho del formulario
-      box-sizing: border-box; // Para que padding no afecte el width total
+      width: 100%;
+      box-sizing: border-box;
       transition: all 0.2s ease;
 
       &:focus {
         outline: none;
-        border-color: $primary-accent; // Usar el color de acento principal
-        box-shadow: 0 0 0 3px rgba($primary-accent, 0.3); // Usar el color de acento principal
+        border-color: $primary-accent;
+        box-shadow: 0 0 0 3px rgba($primary-accent, 0.3);
       }
 
       &::placeholder {
@@ -94,7 +92,7 @@ $primary-accent: $reddit-orange;
 
       &.ng-touched.ng-invalid {
         border-color: $error-red;
-        box-shadow: 0 0 0 1px $error-red; // Resaltar más el error
+        box-shadow: 0 0 0 1px $error-red;
       }
     }
 
@@ -103,8 +101,8 @@ $primary-accent: $reddit-orange;
       padding: 14px;
       border-radius: 30px;
       border: none;
-      background: $primary-accent; // Usar el color de acento principal
-      color: $light-text; // Texto blanco para contraste con naranja
+      background: $primary-accent;
+      color: $light-text;
       font-weight: 700;
       font-size: 16px;
       text-transform: uppercase;
@@ -113,7 +111,7 @@ $primary-accent: $reddit-orange;
       transition: all 0.2s ease;
 
       &:hover:not(:disabled) {
-        background: lighten($primary-accent, 7%); // Usar el color de acento principal
+        background: lighten($primary-accent, 7%);
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       }
@@ -129,7 +127,7 @@ $primary-accent: $reddit-orange;
     .error {
       color: $error-red;
       font-size: 13px;
-      margin: -10px 0 0 4px; // Ajuste de margen
+      margin: -10px 0 0 4px;
       text-align: left;
     }
 
@@ -138,7 +136,7 @@ $primary-accent: $reddit-orange;
       text-align: center;
       font-size: 14px;
       color: $light-gray;
-      margin-bottom: -10px; // Para juntar con el botón de link
+      margin-bottom: -10px;
     }
 
     .btn-link-action {
@@ -146,24 +144,23 @@ $primary-accent: $reddit-orange;
       border-radius: 20px;
       border: none;
       background: transparent;
-      color: $primary-accent; // Usar el color de acento principal
+      color: $primary-accent;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: rgba($primary-accent, 0.1); // Usar el color de acento principal
+        background: rgba($primary-accent, 0.1);
         text-decoration: underline;
       }
     }
   }
 }
 
-// Responsive
 @media (max-width: 576px) {
   :host {
-    padding: 10px; // Menos padding en móvil para :host
+    padding: 10px;
   }
   .login-container {
     margin: 20px auto;

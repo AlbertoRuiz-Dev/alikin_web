@@ -33,7 +33,7 @@ export class PlaylistFormComponent implements OnInit {
     this.playlistForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
-      public: [true, Validators.required], // CORRECTO: El control del formulario se llama 'public'
+      public: [true, Validators.required],
     });
   }
 
@@ -54,7 +54,7 @@ export class PlaylistFormComponent implements OnInit {
         this.playlistForm.patchValue({
           name: playlist.name,
           description: playlist.description,
-          public: playlist.public, // CORRECTO: Usa playlist.public para rellenar el form control 'public'
+          public: playlist.public,
         });
         if (playlist.coverImageUrl) {
           this.coverImagePreviewUrl = this.mediaUrl + playlist.coverImageUrl;
@@ -64,7 +64,7 @@ export class PlaylistFormComponent implements OnInit {
   }
 
   onFileSelected(event: Event): void {
-    // ... (lógica de selección de archivo sin cambios relevantes para 'public') ...
+
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if (fileList && fileList[0]) {
@@ -75,17 +75,17 @@ export class PlaylistFormComponent implements OnInit {
     } else {
       this.selectedCoverImageFile = null;
       if (this.isEditMode && this.playlistIdToEdit) {
-        // Si se deselecciona un archivo, podríamos querer restaurar la vista previa de la imagen del servidor
-        const currentPlaylist = this.playlistForm.value; // Esto no es la playlist original, es el valor del form
-        // Para obtener la imagen original, necesitaríamos tenerla guardada
-        // o volver a pedirla. Por ahora, simplemente limpiamos.
-        // Mejor obtenerla de nuevo si es necesario restaurar la imagen original del servidor
-        // o mantener la URL original en una variable separada.
-        // this.playlistService.getPlaylistById(this.playlistIdToEdit).subscribe(p => {
-        //   if (p && p.coverImageUrl) this.coverImagePreviewUrl = this.mediaUrl + p.coverImageUrl;
-        //   else this.coverImagePreviewUrl = null;
-        // });
-        this.coverImagePreviewUrl = null; // Simplificado: limpiar la preview si se deselecciona
+
+        const currentPlaylist = this.playlistForm.value;
+
+
+
+
+
+
+
+
+        this.coverImagePreviewUrl = null;
       } else {
         this.coverImagePreviewUrl = null;
       }
@@ -103,11 +103,11 @@ export class PlaylistFormComponent implements OnInit {
     }
 
     const formData = new FormData();
-    // El tipo PlaylistRequest aquí asume que tiene 'public', no 'isPublic'
+
     const playlistDetails: Partial<PlaylistRequest> = {
       name: this.playlistForm.value.name,
       description: this.playlistForm.value.description,
-      public: this.playlistForm.value.public, // CORRECTO: Toma el valor del form control 'public' y lo asigna a la clave 'public' del JSON
+      public: this.playlistForm.value.public,
     };
     formData.append('playlistData', new Blob([JSON.stringify(playlistDetails)], { type: 'application/json' }));
 
@@ -115,12 +115,12 @@ export class PlaylistFormComponent implements OnInit {
       formData.append('coverImageFile', this.selectedCoverImageFile, this.selectedCoverImageFile.name);
     }
 
-    // Lógica de submit (create/update)
+
     if (this.isEditMode && this.playlistIdToEdit) {
       this.playlistService.updatePlaylist(this.playlistIdToEdit, formData).subscribe({
         next: (updatedPlaylist) => {
           this.successMessage = `Playlist "${updatedPlaylist.name}" actualizada.`;
-          // Navega a la ruta base /playlist y luego al ID
+
           setTimeout(() => this.router.navigate(['/playlist', updatedPlaylist.id]), 1500);
         },
         error: (err) => {

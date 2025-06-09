@@ -8,7 +8,7 @@ $text-primary: #ffffff;
 $text-secondary: #b3b3b3;
 $text-muted: #888888;
 $accent-orange: #ff4500;
-$accent-green: #1DB954; // Para botones de acción
+$accent-green: #1DB954;
 $white: #ffffff;
 $status-error: #e74c3c;
 
@@ -16,8 +16,8 @@ $status-error: #e74c3c;
 .songs-page-container {
   padding: 20px 30px;
   color: $text-secondary;
-  // background-color: $theme-bg-primary; // Si no lo hereda del layout
-  min-height: calc(100vh - 60px); // Asumiendo navbar de 60px
+
+  min-height: calc(100vh - 60px);
 }
 
 .songs-header {
@@ -60,7 +60,7 @@ $status-error: #e74c3c;
   }
 }
 
-.upload-song-btn, .accent-btn { // Estilo común para botones de acción
+.upload-song-btn, .accent-btn {
   background-color: $accent-green;
   color: $white;
   border: none;
@@ -78,10 +78,8 @@ $status-error: #e74c3c;
   }
 }
 
-// --- Estilos para el formulario de subida (tu SCSS existente, con algunos ajustes) ---
 .song-upload-form-section {
-  // Podrías usar un estilo de modal/overlay si lo prefieres
-  // Por ahora, lo mostramos como una sección
+
   margin-bottom: 30px;
   padding: 20px;
   background-color: $theme-bg-secondary;
@@ -89,13 +87,13 @@ $status-error: #e74c3c;
   border: 1px solid $border-primary-darktheme;
 }
 
-.song-upload-container { // Tu contenedor existente para el form
-  background-color: transparent; // El fondo ya lo da .song-upload-form-section
+.song-upload-container {
+  background-color: transparent;
   border-radius: 0;
   padding: 0;
   max-width: 100%;
   margin: 0;
-  color: $text-primary; // Asegura que el texto dentro sea visible
+  color: $text-primary;
 
   .form-header {
     display: flex;
@@ -145,8 +143,8 @@ $status-error: #e74c3c;
       }
     }
     input[type="file"] {
-      color: $text-secondary; // El texto del input de archivo
-      &::file-selector-button { // Estilo del botón "Seleccionar archivo"
+      color: $text-secondary;
+      &::file-selector-button {
         background-color: $accent-orange;
         color: $white;
         border: none;
@@ -170,7 +168,7 @@ $status-error: #e74c3c;
       border: 1px solid $border-primary-darktheme;
     }
 
-    .submit-upload-btn { // Hereda de .accent-btn pero podemos sobreescribir
+    .submit-upload-btn {
       margin-top: 1rem;
       padding: 0.8rem 1rem;
       font-size: 1rem;
@@ -193,7 +191,7 @@ $status-error: #e74c3c;
     .field-error small { color: $status-error; font-size: 0.8rem; margin-top: 4px; }
   }
 }
-// --- Fin estilos formulario de subida ---
+
 
 
 .songs-list-container {
@@ -217,7 +215,7 @@ $status-error: #e74c3c;
 
 .song-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); // Ajusta minmax para el tamaño de tarjeta
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
 }
 
@@ -227,8 +225,8 @@ $status-error: #e74c3c;
   padding: 15px;
   transition: background-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
-  border: 1px solid transparent; // Para el hover
-  position: relative; // Para el play-overlay
+  border: 1px solid transparent;
+  position: relative;
 
   &:hover {
     background-color: $theme-bg-tertiary;
@@ -242,7 +240,7 @@ $status-error: #e74c3c;
   .song-cover-container {
     position: relative;
     margin-bottom: 12px;
-    padding-top: 100%; // Para mantener relación de aspecto cuadrada para la imagen
+    padding-top: 100%;
 
     .song-cover-art {
       position: absolute;
@@ -252,7 +250,7 @@ $status-error: #e74c3c;
       height: 100%;
       object-fit: cover;
       border-radius: 6px;
-      background-color: $theme-bg-tertiary; // Color mientras carga o si no hay imagen
+      background-color: $theme-bg-tertiary;
     }
 
     .play-overlay {

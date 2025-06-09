@@ -1,4 +1,4 @@
-// Variables de color de Spotify
+
 $spotify-green: #1DB954;
 $spotify-light-green: #1ed760;
 $spotify-black: #121212;
@@ -48,7 +48,7 @@ $white: #ffffff;
   }
 }
 
-// División en tres secciones (izquierda, centro, derecha)
+
 .navbar-left, .navbar-center, .navbar-right {
   display: flex;
   align-items: center;
@@ -69,10 +69,10 @@ $white: #ffffff;
   width: 25%;
 }
 
-// Logo
+
 .brand {
   display: flex;
-  cursor: pointer; // Para indicar que es clickeable
+  cursor: pointer;
   transition: opacity 0.2s ease;
   &:hover {
     opacity: 0.8;
@@ -99,7 +99,7 @@ $white: #ffffff;
   }
 }
 
-// Buscador centrado
+
 .search-container {
   width: 100%;
   max-width: 400px;
@@ -153,7 +153,7 @@ $white: #ffffff;
   }
 }
 
-// Usuario
+
 .user-actions {
   display: flex;
   align-items: center;
@@ -270,7 +270,7 @@ $white: #ffffff;
   z-index: 90;
 }
 
-// Responsive
+
 @media (max-width: 768px) {
   .navbar-content {
     padding: 0 1rem;

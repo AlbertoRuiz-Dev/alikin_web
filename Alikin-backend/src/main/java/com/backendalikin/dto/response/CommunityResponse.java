@@ -21,8 +21,8 @@ public class CommunityResponse {
     private LocalDateTime createdAt;
     private UserBasicResponse leader;
     private int membersCount;
-    private boolean isMember; // Si el usuario actual es miembro
-    private String userRole; // Rol del usuario actual en la comunidad
+    private boolean isMember; 
+    private String userRole; 
     private PlaylistBasicResponse radioPlaylist;
     private String radioStationName;
     private String radioStreamUrl;

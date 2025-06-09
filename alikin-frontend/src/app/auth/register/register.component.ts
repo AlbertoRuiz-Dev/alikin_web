@@ -27,13 +27,13 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Aplicar el fondo directamente desde TypeScript
+
     document.body.style.backgroundImage = "url('/assets/bgi/register.jpg')";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundAttachment = "fixed";
-    document.body.style.backgroundColor = "#121212"; // Color de respaldo
+    document.body.style.backgroundColor = "#121212";
   }
 
   onSubmit(): void {

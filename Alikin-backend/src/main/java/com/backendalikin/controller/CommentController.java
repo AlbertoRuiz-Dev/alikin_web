@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "bearerAuth") // 👈 esto aplica el token a todos los endpoints de la clase
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Comentarios", description = "API para gestión de comentarios")
 public class CommentController {
 

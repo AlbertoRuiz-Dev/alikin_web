@@ -46,9 +46,8 @@ public class PostService {
         if (relativePath == null || relativePath.isEmpty()) {
             return null;
         }
-        // Asegura que no haya dobles barras y que el prefijo sea correcto
         String uploadsPrefix = "/uploads/";
-        if (relativePath.startsWith(uploadsPrefix)) { // Si FileStorageService ya incluye /uploads/
+        if (relativePath.startsWith(uploadsPrefix)) { 
             return appBaseUrl + (relativePath.startsWith("/") ? "" : "/") + relativePath;
         }
         return appBaseUrl + uploadsPrefix + (relativePath.startsWith("/") ? relativePath.substring(1) : relativePath);
@@ -93,8 +92,8 @@ public class PostService {
                 newSong.setTitle(
                         originalFilename != null ? originalFilename.replaceFirst("[.][^.]+$", "") : "Canción Subida");
                 newSong.setArtist(user.getNickname());
-                newSong.setUrl(buildFullFileUrl(relativeSongPath)); // Usamos el campo 'url' para la URL pública del
-                                                                    // archivo
+                newSong.setUrl(buildFullFileUrl(relativeSongPath));
+
                 newSong.setUploader(user);
                 newSong.setUploadedAt(LocalDateTime.now());
                 SongEntity savedSong = songRepository.save(newSong);
@@ -121,8 +120,6 @@ public class PostService {
         PostEntity post = postMapper.toEntity(postRequest);
         post.setUser(user);
         post.setCreatedAt(LocalDateTime.now());
-        // voteCount y commentsCount se inicializan a 0 en PostEntity o el mapper los
-        // calcula/setea
 
         if (postRequest.getCommunityId() != null) {
             CommunityEntity community = communityRepository.findById(postRequest.getCommunityId())
@@ -195,10 +192,6 @@ public class PostService {
 
         if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()
                 && !post.getImageUrl().toLowerCase().startsWith("http")) {
-            // Si no es una URL completa, podría ser una ruta relativa gestionada por
-            // FileStorageService
-            // Necesitarías extraer la parte relativa de la URL completa para pasarla a
-            // deleteFile
             String relativePath = extractRelativePath(post.getImageUrl());
             if (relativePath != null) {
                 try {
@@ -231,7 +224,7 @@ public class PostService {
         if (fullUrl.startsWith(prefix)) {
             return fullUrl.substring(prefix.length());
         }
-        return null; // O devuelve fullUrl si no es un path gestionado localmente
+        return null;
     }
 
     @Transactional
@@ -281,51 +274,24 @@ public class PostService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + userId));
 
-        // Aplicar sort por defecto si no viene uno del cliente
+        
         if (pageable.getSort().isUnsorted()) {
             pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                     Sort.by("createdAt").descending());
         }
 
-        List<UserEntity> following = new ArrayList<>(user.getFollowing()); // Convertir a lista para el repo
+        List<UserEntity> following = new ArrayList<>(user.getFollowing()); 
         List<CommunityEntity> joinedCommunitiesList = new ArrayList<>(user.getCommunities());
 
         Page<PostEntity> posts;
-        // Lógica para determinar qué posts mostrar (combinados, solo de seguidos, solo
-        // de comunidades, o todos)
-        // Esta es la parte más compleja y depende de tus reglas de negocio para el
-        // "feed personalizado".
-        // Ejemplo simplificado: si no sigue a nadie ni está en comunidades, muestra
-        // todos los posts ordenados.
-        // Si sigue o está en comunidades, necesitarías una query más compleja en el
-        // repositorio.
+
 
         if (following.isEmpty() && joinedCommunitiesList.isEmpty()) {
-            // Ya usa el método del repo que ordena, pero el pageable ahora SÍ tiene el
-            // sort.
+
             posts = postRepository.findByOrderByCreatedAtDesc(pageable);
         } else {
-            // Aquí necesitarías una lógica más elaborada y posiblemente un método de
-            // repositorio personalizado
-            // que pueda filtrar por usuarios seguidos Y/O comunidades a las que pertenece,
-            // y que acepte el Pageable con el Sort.
-            // Ejemplo:
-            // posts = postRepository.findFeedPostsForUser(following, joinedCommunitiesList,
-            // pageable);
-            // Por ahora, como fallback, si esta lógica es compleja, usamos el general
-            // ordenado:
-            // ESTO ES UN FALLBACK, DEBERÍAS IMPLEMENTAR LA LÓGICA REAL DEL FEED
-            // PERSONALIZADO
             posts = postRepository.findByUserInOrCommunityInOrderByCreatedAtDesc(following, joinedCommunitiesList,
                     pageable);
-
-            // Si posts está vacío después de filtrar por "following" y "communities",
-            // podrías decidir mostrar posts generales como fallback, o nada.
-            if (posts.isEmpty() && (pageable.getPageNumber() == 0)) { // Solo para la primera página del feed
-                                                                      // personalizado
-
-            }
-
         }
 
         Page<PostResponse> responsePage = posts.map(postMapper::toPostResponse);
@@ -380,7 +346,7 @@ public class PostService {
 
         for (PostResponse postDto : postsPage.getContent()) {
             PostEntity postEntity = postEntityMap.get(postDto.getId());
-            if (postEntity != null && postEntity.getUserVotes() != null) { // Añadido check para userVotes no nulo
+            if (postEntity != null && postEntity.getUserVotes() != null) { 
                 Integer voteValue = postEntity.getUserVotes().get(user);
                 postDto.setUserVote(voteValue != null ? voteValue : 0);
             } else {
@@ -399,13 +365,9 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostResponse> getGlobalPostsWithoutCommunity(Pageable pageable, Long currentUserId) {
         Page<PostEntity> postEntities = postRepository.findGlobalPostsWithoutCommunity(pageable);
-        // Mapea PostEntity a PostResponse. Asumo que tienes un mapper.
-        // Si tu PostResponse necesita información del owner, asegúrate que se cargue
-        // (JOIN FETCH en el repo o acceso en transacción)
-        Page<PostResponse> postResponses = postEntities.map(postMapper::toPostResponse); // Asumiendo un postMapper
 
-        // Opcional pero recomendado: establece el estado de voto del usuario actual
-        // para estos posts
+        Page<PostResponse> postResponses = postEntities.map(postMapper::toPostResponse); 
+
         if (currentUserId != null) {
             setUserVoteStatusForPage(postResponses, currentUserId);
         }

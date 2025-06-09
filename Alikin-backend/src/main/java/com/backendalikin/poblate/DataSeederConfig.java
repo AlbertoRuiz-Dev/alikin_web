@@ -40,7 +40,7 @@ public class DataSeederConfig {
         return args -> {
             if (userRepository.count() > 0) return;
 
-            // Crear usuarios
+            
             UserEntity rivas = createUser("rivas@alikin.com", "Rivas", "rivas");
             UserEntity jose = createUser("joseluis@alikin.com", "Jose Luis", "joseluis");
             UserEntity ango = createUser("ango@alikin.com", "Ango", "ango");
@@ -52,14 +52,14 @@ public class DataSeederConfig {
 
             userRepository.saveAll(List.of(rivas, jose, ango, alberto));
 
-            // Crear géneros
+            
             GenreEntity rock = new GenreEntity(); rock.setName("Rock");
             GenreEntity pop = new GenreEntity(); pop.setName("Pop");
             GenreEntity jazz = new GenreEntity(); jazz.setName("Jazz");
             GenreEntity electronic = new GenreEntity(); electronic.setName("Electrónica");
             genreRepository.saveAll(List.of(rock, pop, jazz, electronic));
 
-            // Crear canciones
+            
             SongEntity song1 = new SongEntity();
             song1.setTitle("Canción Uno");
             song1.setArtist("Artista 1");
@@ -117,7 +117,7 @@ public class DataSeederConfig {
 
             songRepository.saveAll(List.of(song1, song2, song3, song4, song5));
 
-            // Crear comunidades
+            
             CommunityEntity general = new CommunityEntity();
             general.setName("General");
             general.setDescription("Comunidad general para todos");
@@ -130,7 +130,7 @@ public class DataSeederConfig {
 
             communityRepository.saveAll(List.of(general, musica));
 
-            // Crear playlists
+            
             PlaylistEntity lista1 = new PlaylistEntity();
             lista1.setName("Top Canciones");
             lista1.setOwner(rivas);
@@ -143,7 +143,7 @@ public class DataSeederConfig {
 
             playlistRepository.saveAll(List.of(lista1, lista2));
 
-            // Crear posts con imágenes aleatorias
+            
             PostEntity post1 = new PostEntity();
             post1.setContent("Me encanta esta canción!");
             post1.setSong(song1);
@@ -188,7 +188,7 @@ public class DataSeederConfig {
 
             postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
 
-            // Crear comentarios
+            
             CommentEntity c1 = new CommentEntity();
             c1.setContent("Totalmente de acuerdo!");
             c1.setUser(jose);
@@ -235,7 +235,7 @@ public class DataSeederConfig {
 
     public String downloadRandomImage(String keyword, String filename) {
         try {
-            String unsplashAccessKey = "SPdJXWnHDsWcZT6V1O2sMB8iAzK8c2Mrfbu5pGgpY5U"; // Reemplaza con tu clave
+            String unsplashAccessKey = "SPdJXWnHDsWcZT6V1O2sMB8iAzK8c2Mrfbu5pGgpY5U";
             String unsplashUrl = "https://api.unsplash.com/photos/random?query=" + keyword +
                     "&client_id=" + unsplashAccessKey;
 

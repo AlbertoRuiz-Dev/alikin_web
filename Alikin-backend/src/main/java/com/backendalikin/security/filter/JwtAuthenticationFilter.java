@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 path.startsWith("/swagger-ui") ||
                 path.equals("/swagger-ui.html") ||
                 path.equals("/swagger-ui/index.html")||
-                path.startsWith("/uploads/"); // 🔥 Añadir esta línea
+                path.startsWith("/uploads/");
 
     }
 
@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        // 🛑 Evitar interceptar imágenes u otros recursos públicos
         if (path.startsWith("/uploads/")) {
             filterChain.doFilter(request, response);
             return;
@@ -54,25 +53,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
-        // Obtener el token JWT del encabezado de autorización
         String jwt = getJwtFromRequest(request);
         
-        // Validar el token
         if (StringUtils.hasText(jwt)) {
             try {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 
-                // Cargar detalles del usuario
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 
-                // Validar token
                 if (tokenProvider.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = 
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     
-                    // Establecer el usuario autenticado en el contexto de seguridad
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception e) {

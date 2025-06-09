@@ -1,6 +1,6 @@
 package com.backendalikin.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty; // <-- IMPORTANTE: Añade esta importación
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 

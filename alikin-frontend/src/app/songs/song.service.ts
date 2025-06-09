@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Song } from './song.model'; // Asumes que este es tu modelo principal de Canción
+import { Song } from './song.model';
 import { environment } from "../../enviroments/enviroment";
 
-import { Page } from '../shared/models/page.model'; // Ajusta esta ruta si 'Page' está en otro lugar
+import { Page } from '../shared/models/page.model';
 
 
-// Interfaz para los parámetros de paginación específicos de canciones (si es necesario)
-// Si es igual a PageableRequest de PostService, podrías tener una genérica en 'shared/models'.
+.
 export interface PageableSongRequest {
   page?: number;
   size?: number;

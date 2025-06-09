@@ -33,26 +33,21 @@ public class FileStorageService {
     }
 
     public String storeFile(MultipartFile file, String subdirectory) throws IOException {
-        // Normalizar el nombre del archivo
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
         
-        // Verificar si el nombre del archivo es válido
         if (originalFilename.contains("..")) {
             throw new RuntimeException("El nombre del archivo contiene una secuencia de ruta no válida: " + originalFilename);
         }
         
-        // Generar un nombre único para evitar colisiones
         String fileExtension = "";
         if (originalFilename.contains(".")) {
             fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
         }
         String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
         
-        // Crear directorio si no existe
         Path targetDir = rootLocation.resolve(subdirectory);
         Files.createDirectories(targetDir);
         
-        // Copiar archivo al directorio objetivo
         Path targetLocation = targetDir.resolve(uniqueFilename);
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);

@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, of, Subscription, forkJoin } from 'rxjs'; // Importa forkJoin
+import { Observable, of, Subscription, forkJoin } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Playlist } from '../models/playlist.model';
 import { PlaylistService } from '../playlist.services';
-// Asumiendo que tienes un servicio de autenticación que te da el ID del usuario actual.
-// Si no, lo inferiremos, pero es menos robusto.
-// import { AuthService } from 'src/app/auth/auth.service'; // Ejemplo
+
+
+
 
 @Component({
   selector: 'app-playlist-list',
@@ -14,21 +14,21 @@ import { PlaylistService } from '../playlist.services';
   styleUrls: ['./playlist-list.component.scss']
 })
 export class PlaylistListComponent implements OnInit, OnDestroy {
-  // Para la vista combinada (currentUser)
+
   originalMyPlaylists: Playlist[] = [];
   filteredMyPlaylists: Playlist[] = [];
   originalOtherPublicPlaylists: Playlist[] = [];
   filteredOtherPublicPlaylists: Playlist[] = [];
-  currentUserId: number | null = null; // Para filtrar las playlists públicas
+  currentUserId: number | null = null;
 
-  // Para vistas de lista única (public, userSpecific)
+
   originalSingleListPlaylists: Playlist[] = [];
   filteredSingleListPlaylists: Playlist[] = [];
 
   searchTerm: string = '';
   isLoading: boolean = true;
   errorMessage: string | null = null;
-  listTitle: string = 'Mis Playlists'; // Se ajustará dinámicamente
+  listTitle: string = 'Mis Playlists';
   listType: 'currentUser' | 'public' | 'userSpecific' = 'currentUser';
 
   private dataSubscription: Subscription | undefined;
@@ -37,19 +37,16 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     private playlistService: PlaylistService,
     private router: Router,
     private route: ActivatedRoute,
-    // private authService: AuthService // Descomenta si tienes un AuthService
   ) {}
 
   ngOnInit(): void {
-    // this.currentUserId = this.authService.getCurrentUserId(); // Idealmente desde un servicio de autenticación
-
     this.route.data.subscribe(data => {
       this.listType = data['listType'] || 'currentUser';
       const userIdParam = this.route.snapshot.paramMap.get('userId');
       this.resetState();
 
       if (this.listType === 'currentUser') {
-        this.listTitle = ''; // El título se manejará con las secciones en el HTML
+        this.listTitle = '';
         this.loadCombinedPlaylistsView();
       } else {
         let playlistsObservable: Observable<Playlist[]>;
@@ -68,7 +65,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
               playlistsObservable = of([]);
             }
             break;
-          default: // No debería llegar aquí si 'currentUser' se maneja arriba
+          default:
             this.errorMessage = 'Tipo de lista desconocido.';
             playlistsObservable = of([]);
             break;
@@ -100,7 +97,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
 
     const myPlaylistsObs = this.playlistService.getCurrentUserPlaylists().pipe(
       tap(playlists => {
-        // Intenta inferir currentUserId si no lo obtienes de AuthService
+
         if (!this.currentUserId && playlists.length > 0 && playlists[0].owner) {
           this.currentUserId = playlists[0].owner.id;
         }
@@ -126,15 +123,10 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: ({ my, public: allPublic }) => {
         this.originalMyPlaylists = my;
-        // Si currentUserId no se pudo inferir de 'my' (lista vacía),
-        // y necesitas filtrar 'allPublic', podrías necesitar AuthService o no filtrar.
-        // Por ahora, si currentUserId es null, no se filtrarán las propias de 'allPublic'.
+
         if (this.currentUserId) {
           this.originalOtherPublicPlaylists = allPublic.filter(p => p.owner.id !== this.currentUserId);
         } else {
-          // Si no tenemos currentUserId, mostramos todas las públicas.
-          // Esto podría incluir las propias si el usuario no tiene playlists y currentUserId no se pudo inferir.
-          // Una mejor solución es tener AuthService.getCurrentUserId().
           console.warn("No se pudo determinar el ID del usuario actual para filtrar las playlists públicas; se mostrarán todas incluyendo las propias si son públicas.");
           this.originalOtherPublicPlaylists = allPublic;
         }
@@ -142,7 +134,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
         this.applyFilters();
         this.isLoading = false;
       },
-      error: (err) => { // Error general de forkJoin (aunque los catchError individuales deberían manejarlo)
+      error: (err) => {
         this.errorMessage = "Error cargando datos de playlists.";
         this.isLoading = false;
         console.error("Error en forkJoin:", err);
@@ -185,7 +177,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
         this.filteredOtherPublicPlaylists = [...this.originalOtherPublicPlaylists];
       }
     } else {
-      // Filtrado para vistas de lista única
+
       if (lowerSearchTerm !== '') {
         this.filteredSingleListPlaylists = this.originalSingleListPlaylists.filter(playlist =>
           this.matchesSearchTerm(playlist, lowerSearchTerm)
@@ -207,11 +199,11 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   }
 
   handleViewDetails(playlistId: number): void {
-    this.router.navigate(['/playlist', playlistId]); // Ajusta la ruta base si es necesario
+    this.router.navigate(['/playlist', playlistId]);
   }
 
   handleEditPlaylist(playlistId: number): void {
-    this.router.navigate(['/playlist', playlistId, 'edit']); // Ajusta la ruta base
+    this.router.navigate(['/playlist', playlistId, 'edit']);
   }
 
   handleDeletePlaylist(playlistId: number, fromWhichList: 'my' | 'other' | 'single'): void {
@@ -219,7 +211,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
       next: () => {
         alert('Playlist eliminada correctamente.');
         if (this.listType === 'currentUser') {
-          this.loadCombinedPlaylistsView(); // Recargar ambas listas
+          this.loadCombinedPlaylistsView();
         } else {
           const currentObservable = this.getCurrentSingleListObservable();
           if (currentObservable) {
@@ -237,7 +229,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
 
   private getCurrentSingleListObservable(): Observable<Playlist[]> | null {
     const userIdParam = this.route.snapshot.paramMap.get('userId');
-    // No incluir 'currentUser' aquí ya que se maneja por loadCombinedPlaylistsView
+
     switch (this.listType) {
       case 'public': return this.playlistService.getPublicPlaylists();
       case 'userSpecific':
@@ -247,7 +239,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   }
 
   navigateToCreate(): void {
-    this.router.navigate(['/playlist/new']); // Ajusta la ruta base
+    this.router.navigate(['/playlist/new']);
   }
 
   ngOnDestroy(): void {
