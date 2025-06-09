@@ -1,0 +1,38 @@
+<div class="navbar-content">
+  <!-- Izquierda: Logo y nombre -->
+  <div class="navbar-left">
+    <div class="brand" (click)="navigateToHome()">
+    <div class="logo-container">
+      <img src="assets/icons/alikin-logo.png" alt="logo" width="80" height="80"> <div class="app-name">Alikin</div>
+    </div>
+  </div>
+  </div>
+
+
+
+  <!-- Derecha: Usuario -->
+  <div class="navbar-right">
+    <div class="user-actions">
+      <div class="user-info" [ngClass]="{'user-info-expanded': menuVisible}" (click)="toggleUserMenu()">
+        <div class="avatar">
+          <img *ngIf="userAvatar; else defaultAvatar" [src]="userAvatar" alt="Avatar" />
+          <ng-template #defaultAvatar>
+            <div class="avatar-placeholder">{{ getInitials() }}</div>
+          </ng-template>
+        </div>
+        <span class="username">{{ username }}</span>
+        <i class="fas fa-chevron-down chevron-icon" [ngClass]="{'rotate': menuVisible}"></i>
+
+        <div class="user-dropdown" *ngIf="menuVisible">
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" (click)="navigateToProfile()"><i class="fas fa-user"></i><span>Perfil</span></li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-item logout" (click)="logout()"><i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="menu-backdrop" *ngIf="menuVisible" (click)="closeMenu()"></div>
